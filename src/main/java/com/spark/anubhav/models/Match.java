@@ -19,9 +19,9 @@ public class Match {
     private Integer numberOfContactsExchanged;
     private Boolean favourite;
     private String religion;
-    private String userId;
+    private UUID userId;
 
-    public Match(UUID id, String displayName, Integer age, String jobTitle, City city, Integer height, String name, String mainPhoto, BigDecimal compatibilityScore, Integer numberOfContactsExchanged, Boolean favourite, String religion, String userId) {
+    public Match(UUID id, String displayName, Integer age, String jobTitle, City city, Integer height, String name, String mainPhoto, BigDecimal compatibilityScore, Integer numberOfContactsExchanged, Boolean favourite, String religion, UUID userId) {
         this.id = id;
         this.displayName = displayName;
         this.age = age;

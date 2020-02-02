@@ -23,14 +23,14 @@ class MatchServiceTest {
 
     @Test
     public void shouldGetAllTheMatches() {
-        String userId = "userId";
+        UUID userId = UUID.randomUUID();
         Match aMatch = buildMatch(userId);
         when(repository.findAllByUserId(userId)).thenReturn(Collections.singletonList(aMatch));
         List<Match> matches = new MatchService(repository).findAllMatchesForUser(userId);
         assertThat(matches).containsExactly(aMatch);
     }
 
-    private Match buildMatch(String userId) {
+    private Match buildMatch(UUID userId) {
         return Match.builder()
                 .id(UUID.randomUUID())
                 .age(34)

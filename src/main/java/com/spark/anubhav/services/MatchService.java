@@ -4,6 +4,7 @@ import com.spark.anubhav.models.Match;
 import com.spark.anubhav.repositories.MatchRepository;
 
 import java.util.List;
+import java.util.UUID;
 
 public class MatchService {
     private MatchRepository repository;
@@ -12,7 +13,7 @@ public class MatchService {
         this.repository = repository;
     }
 
-    public List<Match> findAllMatchesForUser(String userId) {
+    public List<Match> findAllMatchesForUser(UUID userId) {
         return repository.findAllByUserId(userId);
     }
 }
