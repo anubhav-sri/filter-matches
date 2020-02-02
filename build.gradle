@@ -7,10 +7,14 @@ plugins {
 group 'com.spark.anubhav'
 version '1.0-SNAPSHOT'
 
-sourceCompatibility = 1.8
+sourceCompatibility = 11
 
 repositories {
     mavenCentral()
+}
+
+test {
+    useJUnitPlatform()
 }
 
 dependencies {
@@ -19,10 +23,14 @@ dependencies {
     implementation 'io.springfox:springfox-swagger2:2.9.2'
     implementation 'io.springfox:springfox-swagger-ui:2.8.0'
     implementation 'io.springfox:springfox-bean-validators:2.8.0'
+    annotationProcessor("org.projectlombok:lombok:1.18.4")
+    implementation 'org.projectlombok:lombok:1.18.4'
 
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit'
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
+    testImplementation('org.junit.jupiter:junit-jupiter:5.5.2')
 }
 
 test {
