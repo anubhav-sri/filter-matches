@@ -4,13 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.UUID;
 
 @AllArgsConstructor
 @Builder
 @Getter
-public class MatchDTO {
+public class MatchDTO implements Serializable {
     private UUID id;
     private String displayName;
     private Integer age;

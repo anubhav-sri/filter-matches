@@ -15,7 +15,7 @@ public class TestUtils {
                 .id(UUID.randomUUID())
                 .age(34)
                 .city(new City("cityName", 78.8, 79.9))
-                .compatibilityScore(BigDecimal.valueOf(54))
+                .compatibilityScore(BigDecimal.valueOf(54.34))
                 .height(170)
                 .displayName("Cool Name")
                 .favourite(false)
