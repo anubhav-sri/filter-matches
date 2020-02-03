@@ -1,12 +1,13 @@
 package com.spark.anubhav.models;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.EqualsAndHashCode;
 
-@Getter
 @AllArgsConstructor
-public class City {
+@EqualsAndHashCode
+public class CityDTO {
     private final String name;
-    private final double latitude;
     private final double longitude;
+    private final double latitude;
+
 }

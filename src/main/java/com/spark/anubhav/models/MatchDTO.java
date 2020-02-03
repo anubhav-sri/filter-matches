@@ -7,22 +7,21 @@ import lombok.Getter;
 import java.math.BigDecimal;
 import java.util.UUID;
 
+@AllArgsConstructor
 @Builder
 @Getter
-@AllArgsConstructor
-public class Match {
+public class MatchDTO {
     private UUID id;
     private String displayName;
     private Integer age;
     private String jobTitle;
-    private City city;
+    private CityDTO city;
     private Integer height;
     private String name;
     private String mainPhoto;
     private BigDecimal compatibilityScore;
-    private Integer numberOfContactsExchanged;
+    private Integer contactsExchanged;
     private Boolean favourite;
     private String religion;
-    private UUID userId;
 
 }

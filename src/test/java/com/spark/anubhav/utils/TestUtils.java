@@ -1,6 +1,7 @@
 package com.spark.anubhav.utils;
 
 import com.spark.anubhav.models.City;
+import com.spark.anubhav.models.CityDTO;
 import com.spark.anubhav.models.Match;
 import com.spark.anubhav.models.MatchDTO;
 
@@ -28,11 +29,17 @@ public class TestUtils {
     }
 
     public static MatchDTO buildMatchDTO(Match match) {
+        City matchCity = match.getCity();
+        CityDTO cityDTO = new CityDTO(
+                matchCity.getName(),
+                matchCity.getLongitude(),
+                matchCity.getLatitude());
+
         return MatchDTO.builder()
                 .name(match.getName())
                 .displayName(match.getDisplayName())
                 .age(match.getAge())
-                .city(match.getCity())
+                .city(cityDTO)
                 .compatibilityScore(match.getCompatibilityScore())
                 .favourite(match.getFavourite())
                 .height(match.getHeight())
