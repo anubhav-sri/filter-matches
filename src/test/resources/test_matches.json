@@ -1,0 +1,38 @@
+{
+  "userId": "31eed42a-fdd1-4751-bcf3-00a4c8e40d7e",
+  "matches": [
+    {
+      "displayName": "Caroline",
+      "age": 41,
+      "jobTitle": "Corporate Lawyer",
+      "heightInCm": 153,
+      "city": {
+        "name": "Leeds",
+        "lat": 53.801277,
+        "lon": -1.548567
+      },
+      "mainPhoto": "http://thecatapi.com/api/images/get?format=src&type=gif",
+      "compatibilityScore": 0.76,
+      "contactsExchanged": 2,
+      "favourite": true,
+      "religion": "Atheist"
+    },
+    {
+      "displayName": "Sharon",
+      "age": 47,
+      "jobTitle": "Doctor",
+      "heightInCm": 161,
+      "city": {
+        "name": "Solihull",
+        "lat": 52.412811,
+        "lon": -1.778197
+      },
+      "mainPhoto": "http://thecatapi.com/api/images/get?format=src&type=gif",
+      "compatibilityScore": 0.97,
+      "contactsExchanged": 0,
+      "favourite": false,
+      "religion": "Islam"
+    }
+  ]
+}
+

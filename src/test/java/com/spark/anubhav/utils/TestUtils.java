@@ -42,7 +42,7 @@ public class TestUtils {
                 .city(cityDTO)
                 .compatibilityScore(match.getCompatibilityScore())
                 .favourite(match.getFavourite())
-                .height(match.getHeight())
+                .heightInCm(match.getHeight())
                 .id(match.getId())
                 .jobTitle(match.getJobTitle())
                 .mainPhoto(match.getMainPhoto())

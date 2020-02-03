@@ -1,14 +1,16 @@
 package com.spark.anubhav.models;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.UUID;
 
 @Getter
+@NoArgsConstructor
 public class UserMatchesDTO {
-    private final UUID userId;
-    private final List<MatchDTO> matches;
+    private UUID userId;
+    private List<MatchDTO> matches;
 
     public UserMatchesDTO(UUID userId, List<MatchDTO> matches) {
         this.userId = userId;

@@ -1,6 +1,7 @@
 package com.spark.anubhav.models;
 
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,9 +12,10 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@EqualsAndHashCode
 public class City {
     @Id
     private String name;
-    private double latitude;
-    private double longitude;
+    private Double latitude;
+    private Double longitude;
 }
