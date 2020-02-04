@@ -20,7 +20,6 @@ public class MatchDTO implements Serializable {
     private String jobTitle;
     private CityDTO city;
     private Integer heightInCm;
-    private String name;
     private String mainPhoto;
     private BigDecimal compatibilityScore;
     private Integer contactsExchanged;

@@ -43,7 +43,6 @@ public class MatchMapper {
                 matchCity.getLatitude());
 
         return MatchDTO.builder()
-                .name(match.getName())
                 .displayName(match.getDisplayName())
                 .age(match.getAge())
                 .city(cityDTO)

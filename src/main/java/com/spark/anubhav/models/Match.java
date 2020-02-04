@@ -21,7 +21,6 @@ public class Match {
     @ManyToOne(cascade = CascadeType.ALL)
     private City city;
     private Integer height;
-    private String name;
     private String mainPhoto;
     private BigDecimal compatibilityScore;
     private Integer numberOfContactsExchanged;

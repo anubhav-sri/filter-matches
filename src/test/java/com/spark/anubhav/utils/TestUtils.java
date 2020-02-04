@@ -18,7 +18,6 @@ public class TestUtils {
                 .height(170)
                 .displayName("Cool Name")
                 .favourite(false)
-                .name("Name")
                 .jobTitle("Job1")
                 .mainPhoto("")
                 .numberOfContactsExchanged(0)
@@ -35,7 +34,6 @@ public class TestUtils {
                 matchCity.getLatitude());
 
         return MatchDTO.builder()
-                .name(match.getName())
                 .displayName(match.getDisplayName())
                 .age(match.getAge())
                 .city(cityDTO)
