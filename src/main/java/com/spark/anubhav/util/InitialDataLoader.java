@@ -6,7 +6,12 @@ import com.spark.anubhav.mappers.MatchMapper;
 import com.spark.anubhav.models.Match;
 import com.spark.anubhav.models.UserMatchesDTO;
 import com.spark.anubhav.repositories.MatchRepository;
+import com.spark.anubhav.services.MatchService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -15,14 +20,17 @@ import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
 
+
 public class InitialDataLoader {
-    private final MatchRepository matchRepository;
+    private final MatchService matchService;
     private final String jsonFileName;
     private final ObjectMapper objectMapper;
-    private boolean enabled;
+    private final boolean enabled;
 
-    public InitialDataLoader(MatchRepository matchRepository, String jsonFileName, boolean enabled, ObjectMapper objectMapper) {
-        this.matchRepository = matchRepository;
+    public InitialDataLoader(MatchService matchService,
+                             String jsonFileName,
+                             boolean enabled, ObjectMapper objectMapper) {
+        this.matchService = matchService;
         this.jsonFileName = jsonFileName;
         this.enabled = enabled;
         this.objectMapper = objectMapper;
@@ -34,7 +42,7 @@ public class InitialDataLoader {
             UserMatchesDTO matchDTOS = mapJsonToUserMatches(dataFile);
             final UUID userId = matchDTOS.getUserId();
             List<Match> matches = mapDTOToMatch(matchDTOS, userId);
-            matchRepository.saveAll(matches);
+            matchService.addMatchesForUser(matches);
             return matches;
         }
         return List.of();

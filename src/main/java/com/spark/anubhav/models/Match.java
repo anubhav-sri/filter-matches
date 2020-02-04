@@ -29,4 +29,7 @@ public class Match {
     private String religion;
     private UUID userId;
 
+    public void setId(UUID id) {
+        this.id = id;
+    }
 }

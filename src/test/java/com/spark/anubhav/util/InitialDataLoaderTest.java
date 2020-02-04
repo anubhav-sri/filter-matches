@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spark.anubhav.models.City;
 import com.spark.anubhav.models.Match;
 import com.spark.anubhav.repositories.MatchRepository;
+import com.spark.anubhav.services.MatchService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -23,7 +24,7 @@ import static org.mockito.Mockito.verifyNoInteractions;
 class InitialDataLoaderTest {
 
     @Mock
-    private MatchRepository repository;
+    private MatchService matchService;
 
     private final UUID USER_ID = UUID.fromString("31eed42a-fdd1-4751-bcf3-00a4c8e40d7e");
     private final Match FIRST_MATCH_EXPECTED = buildFirstMatch();
@@ -32,29 +33,30 @@ class InitialDataLoaderTest {
 
     @Test
     public void shouldLoadMatchesFromJsonWhenEnabled() throws IOException {
-        List<Match> matchDTOS = new InitialDataLoader(repository, "test_matches.json",
+        List<Match> matchDTOS = new InitialDataLoader(matchService, "test_matches.json",
                 true, objectMapper).loadMatchesToDB();
 
-        verify(repository).saveAll(matchDTOS);
+        verify(matchService).addMatchesForUser(matchDTOS);
 
         assertAll("verify if all the matches in json are loaded",
                 () -> assertThat(matchDTOS.size()).isEqualTo(2),
                 () -> assertThat(matchDTOS)
-                        .usingFieldByFieldElementComparator()
+                        .usingElementComparatorIgnoringFields("id")
                         .containsAll(List.of(FIRST_MATCH_EXPECTED, SECOND_MATCH_EXPECTED)));
     }
 
     @Test
     public void shouldNotLoadMatchesFromJsonWhenDisabled() throws IOException {
-        List<Match> matchDTOS = new InitialDataLoader(repository, "test_matches.json", false, objectMapper).loadMatchesToDB();
+        List<Match> matchDTOS = new InitialDataLoader(matchService, "test_matches.json", false, objectMapper).loadMatchesToDB();
 
-        verifyNoInteractions(repository);
+        verifyNoInteractions(matchService);
 
         assertThat(matchDTOS).isEmpty();
     }
 
     private Match buildSecondMatch() {
         return Match.builder()
+                .id(UUID.randomUUID())
                 .displayName("Sharon")
                 .age(47)
                 .jobTitle("Doctor")

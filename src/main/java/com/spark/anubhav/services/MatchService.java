@@ -10,20 +10,20 @@ import java.util.UUID;
 
 @Service
 public class MatchService {
-    private MatchRepository repository;
+    private MatchRepository matchRepository;
 
-    public MatchService(MatchRepository repository) {
-        this.repository = repository;
+    public MatchService(MatchRepository matchRepository) {
+        this.matchRepository = matchRepository;
     }
 
     public List<Match> findAllMatchesForUser(UUID userId) {
-        return repository.findAllByUserId(userId);
+        return matchRepository.findAllByUserId(userId);
     }
 
     public List<Match> addMatchesForUser(List<Match> matchesForUser) {
         List<Match> savedMatches = new ArrayList<>();
         matchesForUser.forEach(m -> m.setId(UUID.randomUUID()));
-        repository.saveAll(matchesForUser).iterator().forEachRemaining(savedMatches::add);
+        matchRepository.saveAll(matchesForUser).iterator().forEachRemaining(savedMatches::add);
         return savedMatches;
     }
 }
