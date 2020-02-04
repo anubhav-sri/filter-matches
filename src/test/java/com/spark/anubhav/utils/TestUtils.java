@@ -12,7 +12,6 @@ public class TestUtils {
 
     public static Match buildMatch(UUID userId) {
         return Match.builder()
-                .id(UUID.randomUUID())
                 .age(34)
                 .city(new City("cityName", 78.8, 79.9))
                 .compatibilityScore(BigDecimal.valueOf(54.34))

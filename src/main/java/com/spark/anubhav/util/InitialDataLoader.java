@@ -20,22 +20,24 @@ import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
 
-
+@Component
 public class InitialDataLoader {
     private final MatchService matchService;
     private final String jsonFileName;
     private final ObjectMapper objectMapper;
     private final boolean enabled;
 
+    @Autowired
     public InitialDataLoader(MatchService matchService,
-                             String jsonFileName,
-                             boolean enabled, ObjectMapper objectMapper) {
+                             @Value("${spark.initialData.fileName:matches.json}") String jsonFileName,
+                             @Value("${spark.initialDataLoad:false}") boolean enabled, ObjectMapper objectMapper) {
         this.matchService = matchService;
         this.jsonFileName = jsonFileName;
         this.enabled = enabled;
         this.objectMapper = objectMapper;
     }
 
+    @PostConstruct
     public List<Match> loadMatchesToDB() throws IOException {
         if (enabled) {
             InputStream dataFile = getClass().getClassLoader().getResourceAsStream(jsonFileName);

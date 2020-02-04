@@ -1,0 +1,402 @@
+{
+  "userId": "31eed42a-fdd1-4751-bcf3-00a4c8e40d7e",
+  "matches": [
+    {
+      "displayName": "Caroline",
+      "age": 41,
+      "jobTitle": "Corporate Lawyer",
+      "heightInCm": 153,
+      "city": {
+        "name": "Leeds",
+        "lat": 53.801277,
+        "lon": -1.548567
+      },
+      "mainPhoto": "http://thecatapi.com/api/images/get?format=src&type=gif",
+      "compatibilityScore": 0.76,
+      "contactsExchanged": 2,
+      "favourite": true,
+      "religion": "Atheist"
+    },
+    {
+      "displayName": "Sharon",
+      "age": 47,
+      "jobTitle": "Doctor",
+      "heightInCm": 161,
+      "city": {
+        "name": "Solihull",
+        "lat": 52.412811,
+        "lon": -1.778197
+      },
+      "mainPhoto": "http://thecatapi.com/api/images/get?format=src&type=gif",
+      "compatibilityScore": 0.97,
+      "contactsExchanged": 0,
+      "favourite": false,
+      "religion": "Islam"
+    },
+    {
+      "displayName": "Natalia",
+      "age": 38,
+      "jobTitle": "Project Manager",
+      "heightInCm": 144,
+      "city": {
+        "name": "Cardiff",
+        "lat": 51.481583,
+        "lon": -3.179090
+      },
+      "mainPhoto": "http://thecatapi.com/api/images/get?format=src&type=gif",
+      "compatibilityScore": 0.47,
+      "contactsExchanged": 5,
+      "favourite": false,
+      "religion": "Christian"
+    },
+    {
+      "displayName": "Marta",
+      "age": 55,
+      "jobTitle": "Finance",
+      "heightInCm": 140,
+      "city": {
+        "name": "Eastbourne",
+        "lat": 50.768036,
+        "lon": 0.290472
+      },
+      "mainPhoto": "http://thecatapi.com/api/images/get?format=src&type=gif",
+      "compatibilityScore": 0.95,
+      "contactsExchanged": 0,
+      "favourite": false,
+      "religion": "Agnostic"
+    },
+    {
+      "displayName": "Maria",
+      "age": 43,
+      "jobTitle": "CEO",
+      "heightInCm": 175,
+      "city": {
+        "name": "London",
+        "lat": 51.509865,
+        "lon": -0.118092
+      },
+      "mainPhoto": "http://thecatapi.com/api/images/get?format=src&type=gif",
+      "compatibilityScore": 0.88,
+      "contactsExchanged": 0,
+      "favourite": false,
+      "religion": "Christian"
+    },
+    {
+      "displayName": "Stephanie",
+      "age": 39,
+      "jobTitle": "Project Manager",
+      "heightInCm": 153,
+      "city": {
+        "name": "London",
+        "lat": 51.509865,
+        "lon": -0.118092
+      },
+      "compatibilityScore": 0.87,
+      "contactsExchanged": 4,
+      "favourite": false,
+      "religion": "Christian"
+    },
+    {
+      "displayName": "Claire",
+      "age": 48,
+      "jobTitle": "GP",
+      "heightInCm": 167,
+      "city": {
+        "name": "London",
+        "lat": 51.509865,
+        "lon": -0.118092
+      },
+      "mainPhoto": "http://thecatapi.com/api/images/get?format=src&type=gif",
+      "compatibilityScore": 0.83,
+      "contactsExchanged": 6,
+      "favourite": false,
+      "religion": "Atheist"
+    },
+    {
+      "displayName": "Colette",
+      "age": 39,
+      "jobTitle": "Doctor - Hospital",
+      "heightInCm": 177,
+      "city": {
+        "name": "Swindon",
+        "lat": 51.568535,
+        "lon": -1.772232
+      },
+      "mainPhoto": "http://thecatapi.com/api/images/get?format=src&type=gif",
+      "compatibilityScore": 0.89,
+      "contactsExchanged": 2,
+      "favourite": false,
+      "religion": "Christian"
+    },
+    {
+      "displayName": "Caroline",
+      "age": 43,
+      "jobTitle": "Marketing Consultant",
+      "heightInCm": 160,
+      "city": {
+        "name": "Oxford",
+        "lat": 51.752022,
+        "lon": -1.257677
+      },
+      "mainPhoto": "http://thecatapi.com/api/images/get?format=src&type=gif",
+      "compatibilityScore": 0.91,
+      "contactsExchanged": 1,
+      "favourite": false,
+      "religion": "Atheist"
+    },
+    {
+      "displayName": "Kate",
+      "age": 42,
+      "jobTitle": "Psychologist",
+      "heightInCm": 160,
+      "city": {
+        "name": "Salisbury",
+        "lat": 51.068787,
+        "lon": -1.794472
+      },
+      "mainPhoto": "http://thecatapi.com/api/images/get?format=src&type=gif",
+      "compatibilityScore": 0.97,
+      "contactsExchanged": 10,
+      "favourite": false,
+      "religion": "Buddhist"
+    },
+    {
+      "displayName": "Katie",
+      "age": 40,
+      "jobTitle": "Lawyer",
+      "heightInCm": 148,
+      "city": {
+        "name": "Weymouth",
+        "lat": 50.614429,
+        "lon": -2.457621
+      },
+      "compatibilityScore": 0.94,
+      "contactsExchanged": 0,
+      "favourite": false,
+      "religion": "Atheist"
+    },
+    {
+      "displayName": "Clare",
+      "age": 40,
+      "jobTitle": "Accountant",
+      "heightInCm": 144,
+      "city": {
+        "name": "Bournemouth",
+        "lat": 50.720806,
+        "lon": -1.904755
+      },
+      "mainPhoto": "http://thecatapi.com/api/images/get?format=src&type=gif",
+      "compatibilityScore": 0.90,
+      "contactsExchanged": 8,
+      "favourite": false,
+      "religion": "Christian"
+    },
+    {
+      "displayName": "Laura",
+      "age": 39,
+      "jobTitle": "Lawyer",
+      "heightInCm": 160,
+      "city": {
+        "name": "Plymouth",
+        "lat": 50.376289,
+        "lon": -4.143841
+      },
+      "mainPhoto": "http://thecatapi.com/api/images/get?format=src&type=gif",
+      "compatibilityScore": 0.89,
+      "contactsExchanged": 0,
+      "favourite": false,
+      "religion": "Christian"
+    },
+    {
+      "displayName": "Katlin",
+      "age": 39,
+      "jobTitle": "Barrister",
+      "heightInCm": 153,
+      "city": {
+        "name": "Inverness",
+        "lat": 57.477772,
+        "lon": -4.224721
+      },
+      "mainPhoto": "http://thecatapi.com/api/images/get?format=src&type=gif",
+      "compatibilityScore": 0.87,
+      "contactsExchanged": 0,
+      "favourite": true,
+      "religion": "Jewish"
+    },
+    {
+      "displayName": "Tracy",
+      "age": 39,
+      "jobTitle": "Lawyer",
+      "heightInCm": 153,
+      "city": {
+        "name": "Aberdeen",
+        "lat": 57.149651,
+        "lon": -2.099075
+      },
+      "mainPhoto": "http://thecatapi.com/api/images/get?format=src&type=gif",
+      "compatibilityScore": 0.87,
+      "contactsExchanged": 0,
+      "favourite": false,
+      "religion": "Christian"
+    },
+    {
+      "displayName": "Angie",
+      "age": 50,
+      "jobTitle": "Accountant",
+      "heightInCm": 153,
+      "city": {
+        "name": "Ayr",
+        "lat": 55.458565,
+        "lon": -4.629179
+      },
+      "mainPhoto": "http://thecatapi.com/api/images/get?format=src&type=gif",
+      "compatibilityScore": 0.93,
+      "contactsExchanged": 8,
+      "favourite": true,
+      "religion": "Atheist"
+    },
+    {
+      "displayName": "Samantha",
+      "age": 32,
+      "jobTitle": "Project Manager",
+      "heightInCm": 161,
+      "city": {
+        "name": "Belfast",
+        "lat": 54.607868,
+        "lon": -5.926437
+      },
+      "mainPhoto": "http://thecatapi.com/api/images/get?format=src&type=gif",
+      "compatibilityScore": 0.89,
+      "contactsExchanged": 0,
+      "favourite": false,
+      "religion": "Christian"
+    },
+    {
+      "displayName": "Elizabeth",
+      "age": 41,
+      "jobTitle": "Dentist",
+      "heightInCm": 145,
+      "city": {
+        "name": "Londonderry",
+        "lat": 55.006763,
+        "lon": -7.318268
+      },
+      "mainPhoto": "http://thecatapi.com/api/images/get?format=src&type=gif",
+      "compatibilityScore": 0.83,
+      "contactsExchanged": 4,
+      "favourite": true,
+      "religion": "Islam"
+    },
+    {
+      "displayName": "Emma",
+      "age": 40,
+      "jobTitle": "Banker",
+      "heightInCm": 150,
+      "city": {
+        "name": "Leeds",
+        "lat": 53.801277,
+        "lon": -1.548567
+      },
+      "mainPhoto": "http://thecatapi.com/api/images/get?format=src&type=gif",
+      "compatibilityScore": 0.73,
+      "contactsExchanged": 0,
+      "favourite": false,
+      "religion": "Christian"
+    },
+    {
+      "displayName": "Diana",
+      "age": 44,
+      "jobTitle": "Consultant",
+      "heightInCm": 153,
+      "city": {
+        "name": "London",
+        "lat": 51.509865,
+        "lon": -0.118092
+      },
+      "mainPhoto": "http://thecatapi.com/api/images/get?format=src&type=gif",
+      "compatibilityScore": 0.50,
+      "contactsExchanged": 0,
+      "favourite": false,
+      "religion": "Atheist"
+    },
+    {
+      "displayName": "Kysha",
+      "age": 45,
+      "jobTitle": "Lawyer",
+      "heightInCm": 144,
+      "city": {
+        "name": "London",
+        "lat": 51.509865,
+        "lon": -0.118092
+      },
+      "compatibilityScore": 0.88,
+      "contactsExchanged": 10,
+      "favourite": true,
+      "religion": "Islam"
+    },
+    {
+      "displayName": "Anne",
+      "age": 38,
+      "jobTitle": "Marketing Consultant",
+      "heightInCm": 170,
+      "city": {
+        "name": "Swindon",
+        "lat": 51.568535,
+        "lon": -1.772232
+      },
+      "mainPhoto": "http://thecatapi.com/api/images/get?format=src&type=gif",
+      "compatibilityScore": 0.88,
+      "contactsExchanged": 0,
+      "favourite": false,
+      "religion": "Jewish"
+    },
+    {
+      "displayName": "Daniela",
+      "age": 37,
+      "jobTitle": "Doctor",
+      "heightInCm": 177,
+      "city": {
+        "name": "Bournemouth",
+        "lat": 50.720806,
+        "lon": -1.904755
+      },
+      "mainPhoto": "http://thecatapi.com/api/images/get?format=src&type=gif",
+      "compatibilityScore": 0.76,
+      "contactsExchanged": 0,
+      "favourite": false,
+      "religion": "Christian"
+    },
+    {
+      "displayName": "Katherine",
+      "age": 39,
+      "jobTitle": "Lawyer",
+      "heightInCm": 177,
+      "city": {
+        "name": "London",
+        "lat": 51.509865,
+        "lon": -0.118092
+      },
+      "mainPhoto": "http://thecatapi.com/api/images/get?format=src&type=gif",
+      "compatibilityScore": 0.99,
+      "contactsExchanged": 50,
+      "favourite": true,
+      "religion": "Atheist"
+    },
+    {
+      "displayName": "Susan",
+      "age": 25,
+      "jobTitle": "Project Manager",
+      "heightInCm": 166,
+      "city": {
+        "name": "Harlow",
+        "lat": 51.772938,
+        "lon": 0.102310
+      },
+      "mainPhoto": "http://thecatapi.com/api/images/get?format=src&type=gif",
+      "compatibilityScore": 0.88,
+      "contactsExchanged": 0,
+      "favourite": false,
+      "religion": "Christian"
+    }
+  ]
+}

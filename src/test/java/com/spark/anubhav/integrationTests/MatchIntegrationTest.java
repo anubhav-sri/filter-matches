@@ -39,6 +39,7 @@ public class MatchIntegrationTest {
     @Test
     public void shouldGetAllTheMatchesForUser() throws Exception {
         Match match = buildMatch(USER_ID);
+        match.setId(UUID.randomUUID());
         matchRepository.save(match);
 
         UserMatchesDTO expectedUserMatches = new UserMatchesDTO(USER_ID, List.of(buildMatchDTO(match)));
