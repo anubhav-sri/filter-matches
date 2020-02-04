@@ -6,6 +6,7 @@ import com.spark.anubhav.mappers.MatchMapper;
 import com.spark.anubhav.models.Match;
 import com.spark.anubhav.models.DTOs.UserMatchesDTO;
 import com.spark.anubhav.services.MatchService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 import static java.util.Objects.requireNonNull;
 
 @Component
+@Slf4j
 public class InitialDataLoader {
     private final MatchService matchService;
     private final String jsonFileName;
@@ -39,14 +41,26 @@ public class InitialDataLoader {
     @PostConstruct
     public List<Match> loadMatchesToDB() throws IOException {
         if (enabled) {
-            InputStream dataFile = getClass().getClassLoader().getResourceAsStream(jsonFileName);
-            UserMatchesDTO matchDTOS = mapJsonToUserMatches(dataFile);
+            log.info("started loading data from {}", jsonFileName);
+
+            UserMatchesDTO matchDTOS = readFromJsonFile();
             final UUID userId = matchDTOS.getUserId();
+
             List<Match> matches = mapDTOToMatch(matchDTOS, userId);
-            matchService.addMatchesForUser(matches);
+
+            log.info("saving {} matches for user {}", matches.size(), userId);
+            List<Match> savedMatches = matchService.addMatchesForUser(matches);
+            log.info("saved {} matches for user {}", savedMatches.size(), userId);
+
             return matches;
         }
+        log.info("data loader is disabled, please enable it by adding 'spark.initialDataLoad' with true as value");
         return List.of();
+    }
+
+    private UserMatchesDTO readFromJsonFile() throws IOException {
+        InputStream dataFile = getClass().getClassLoader().getResourceAsStream(jsonFileName);
+        return mapJsonToUserMatches(dataFile);
     }
 
     private List<Match> mapDTOToMatch(UserMatchesDTO matchDTOS, UUID userId) {
