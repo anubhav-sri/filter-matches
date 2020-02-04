@@ -5,20 +5,23 @@ import com.spark.anubhav.models.City;
 import com.spark.anubhav.models.Match;
 import com.spark.anubhav.repositories.MatchRepository;
 import com.spark.anubhav.services.MatchService;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.internal.matchers.Equals;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class InitialDataLoaderTest {
@@ -33,16 +36,20 @@ class InitialDataLoaderTest {
 
     @Test
     public void shouldLoadMatchesFromJsonWhenEnabled() throws IOException {
-        List<Match> matchDTOS = new InitialDataLoader(matchService, "test_matches.json",
+        List<Match> expectedMatches = List.of(FIRST_MATCH_EXPECTED, SECOND_MATCH_EXPECTED);
+
+        when(matchService.addMatchesForUser(expectedMatches)).thenReturn(expectedMatches);
+
+        List<Match> savedMatches = new InitialDataLoader(matchService, "test_matches.json",
                 true, objectMapper).loadMatchesToDB();
 
-        verify(matchService).addMatchesForUser(matchDTOS);
+        verify(matchService).addMatchesForUser(expectedMatches);
 
         assertAll("verify if all the matches in json are loaded",
-                () -> assertThat(matchDTOS.size()).isEqualTo(2),
-                () -> assertThat(matchDTOS)
+                () -> assertThat(savedMatches.size()).isEqualTo(2),
+                () -> assertThat(savedMatches)
                         .usingElementComparatorIgnoringFields("id")
-                        .containsAll(List.of(FIRST_MATCH_EXPECTED, SECOND_MATCH_EXPECTED)));
+                        .containsAll(expectedMatches));
     }
 
     @Test
@@ -56,7 +63,6 @@ class InitialDataLoaderTest {
 
     private Match buildSecondMatch() {
         return Match.builder()
-                .id(UUID.randomUUID())
                 .displayName("Sharon")
                 .age(47)
                 .jobTitle("Doctor")

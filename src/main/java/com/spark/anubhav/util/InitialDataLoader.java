@@ -52,7 +52,7 @@ public class InitialDataLoader {
             List<Match> savedMatches = matchService.addMatchesForUser(matches);
             log.info("saved {} matches for user {}", savedMatches.size(), userId);
 
-            return matches;
+            return savedMatches;
         }
         log.info("data loader is disabled, please enable it by adding 'spark.initialDataLoad' with true as value");
         return List.of();
