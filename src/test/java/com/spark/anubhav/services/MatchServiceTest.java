@@ -9,11 +9,15 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
 import static com.spark.anubhav.utils.TestUtils.buildMatch;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.ArgumentMatchers.isNotNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -51,7 +55,14 @@ class MatchServiceTest {
         List<Match> matches = matchService.addMatchesForUser(matchesForUser);
 
         verify(repository).saveAll(matchesForUser);
-        assertThat(matches).containsExactly(aMatch);
+        assertAll("verify if correct matches are added and id is generated",
+                () -> assertThat(matches)
+                        .usingElementComparatorIgnoringFields("id")
+                        .containsExactly(aMatch),
+                () -> assertThat(matches.get(0).getId())
+                        .isNotNull()
+        );
+
     }
 
 }

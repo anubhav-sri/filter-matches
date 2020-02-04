@@ -22,6 +22,7 @@ public class MatchService {
 
     public List<Match> addMatchesForUser(List<Match> matchesForUser) {
         List<Match> savedMatches = new ArrayList<>();
+        matchesForUser.forEach(m -> m.setId(UUID.randomUUID()));
         repository.saveAll(matchesForUser).iterator().forEachRemaining(savedMatches::add);
         return savedMatches;
     }
