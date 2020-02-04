@@ -4,6 +4,7 @@ import com.spark.anubhav.models.Match;
 import com.spark.anubhav.repositories.MatchRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,5 +18,11 @@ public class MatchService {
 
     public List<Match> findAllMatchesForUser(UUID userId) {
         return repository.findAllByUserId(userId);
+    }
+
+    public List<Match> addMatchesForUser(List<Match> matchesForUser) {
+        List<Match> savedMatches = new ArrayList<>();
+        repository.saveAll(matchesForUser).iterator().forEachRemaining(savedMatches::add);
+        return savedMatches;
     }
 }
