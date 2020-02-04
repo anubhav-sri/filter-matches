@@ -1,7 +1,7 @@
 package com.spark.anubhav.controllers;
 
 import com.spark.anubhav.mappers.MatchMapper;
-import com.spark.anubhav.models.UserMatchesDTO;
+import com.spark.anubhav.models.DTOs.UserMatchesDTO;
 import com.spark.anubhav.services.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

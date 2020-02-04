@@ -1,4 +1,4 @@
-package com.spark.anubhav.models;
+package com.spark.anubhav.models.DTOs;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

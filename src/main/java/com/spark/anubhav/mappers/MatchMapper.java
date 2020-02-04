@@ -1,6 +1,9 @@
 package com.spark.anubhav.mappers;
 
 import com.spark.anubhav.models.*;
+import com.spark.anubhav.models.DTOs.CityDTO;
+import com.spark.anubhav.models.DTOs.MatchDTO;
+import com.spark.anubhav.models.DTOs.UserMatchesDTO;
 
 import java.util.List;
 import java.util.UUID;

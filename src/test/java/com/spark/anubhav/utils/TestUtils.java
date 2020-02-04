@@ -1,9 +1,9 @@
 package com.spark.anubhav.utils;
 
 import com.spark.anubhav.models.City;
-import com.spark.anubhav.models.CityDTO;
+import com.spark.anubhav.models.DTOs.CityDTO;
 import com.spark.anubhav.models.Match;
-import com.spark.anubhav.models.MatchDTO;
+import com.spark.anubhav.models.DTOs.MatchDTO;
 
 import java.math.BigDecimal;
 import java.util.UUID;

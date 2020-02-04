@@ -1,5 +1,6 @@
-package com.spark.anubhav.models;
+package com.spark.anubhav.models.DTOs;
 
+import com.spark.anubhav.models.DTOs.MatchDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

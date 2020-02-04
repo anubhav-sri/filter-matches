@@ -1,8 +1,8 @@
 package com.spark.anubhav.controllers;
 
 import com.spark.anubhav.models.Match;
-import com.spark.anubhav.models.MatchDTO;
-import com.spark.anubhav.models.UserMatchesDTO;
+import com.spark.anubhav.models.DTOs.MatchDTO;
+import com.spark.anubhav.models.DTOs.UserMatchesDTO;
 import com.spark.anubhav.services.MatchService;
 import com.spark.anubhav.utils.TestUtils;
 import org.junit.jupiter.api.Test;
