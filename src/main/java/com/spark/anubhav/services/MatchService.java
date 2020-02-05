@@ -41,11 +41,11 @@ public class MatchService {
         return savedMatches;
     }
 
-    private void setIdForAllMatches(List<Match> matchesForUser) {
-        matchesForUser.forEach(m -> m.setId(UUID.randomUUID()));
+    public List<Match> findAllMatchesForUserBasedOnFilter(UUID userId, boolean hasPhoto) {
+        return matchRepository.findAllByFiltersForUser(userId, hasPhoto);
     }
 
-    public List<Match> findAllMatchesForUserBasedOnFilter(UUID userId, boolean hasPhoto) {
-        throw new UnsupportedOperationException();
+    private void setIdForAllMatches(List<Match> matchesForUser) {
+        matchesForUser.forEach(m -> m.setId(UUID.randomUUID()));
     }
 }

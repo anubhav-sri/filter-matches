@@ -11,4 +11,8 @@ import java.util.UUID;
 public interface MatchRepository extends CrudRepository<Match, UUID> {
 
     List<Match> findAllByUserId(UUID userId);
+
+    default List<Match> findAllByFiltersForUser(UUID userId, boolean hasPhoto) {
+        throw new UnsupportedOperationException();
+    }
 }

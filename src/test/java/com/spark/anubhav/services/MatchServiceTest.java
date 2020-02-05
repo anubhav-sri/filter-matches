@@ -9,15 +9,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
 import static com.spark.anubhav.utils.TestUtils.buildMatch;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.ArgumentMatchers.isNotNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -62,6 +59,22 @@ class MatchServiceTest {
                 () -> assertThat(matches.get(0).getId())
                         .isNotNull()
         );
+
+    }
+
+    @Test
+    public void shouldBeAbleToFilterOutTheMatchIfPhotoIsMissing() {
+        UUID userId = UUID.randomUUID();
+        Match aMatch = buildMatch(userId);
+        List<Match> matchesForUser = Collections.singletonList(aMatch);
+
+        when(repository.findAllByFiltersForUser(userId, true))
+                .thenReturn(matchesForUser);
+
+        List<Match> matches = matchService.findAllMatchesForUserBasedOnFilter(userId, true);
+
+        verify(repository).findAllByFiltersForUser(userId, true);
+        assertThat(matches).usingElementComparatorIgnoringFields("id").containsExactly(aMatch);
 
     }
 

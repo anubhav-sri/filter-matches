@@ -19,7 +19,7 @@ public class TestUtils {
                 .displayName("Cool Name")
                 .favourite(false)
                 .jobTitle("Job1")
-                .mainPhoto("")
+                .mainPhoto("http://mypics")
                 .numberOfContactsExchanged(0)
                 .religion("Athiest")
                 .userId(userId)
