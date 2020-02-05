@@ -5,6 +5,7 @@ import com.spark.anubhav.models.DTOs.MatchDTO;
 import com.spark.anubhav.models.DTOs.UserMatchesDTO;
 import com.spark.anubhav.services.MatchService;
 import com.spark.anubhav.utils.TestUtils;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -14,6 +15,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static com.spark.anubhav.utils.TestUtils.buildMatch;
+import static com.spark.anubhav.utils.TestUtils.buildMatchDTO;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.when;
@@ -23,39 +26,60 @@ class MatchControllerTest {
 
     @Mock
     private MatchService matchService;
+    private MatchController matchController;
+    private static final UUID USER_ID = UUID.randomUUID();
+
+    @BeforeEach
+    void setUp() {
+        matchController = new MatchController(matchService);
+    }
 
     @Test
     public void shouldReturnAllMatchesForTheUser() {
         UUID userId = UUID.randomUUID();
-        List<Match> matchesForUser = List.of(TestUtils.buildMatch(userId));
+        List<Match> matchesForUser = List.of(buildMatch(userId));
         List<MatchDTO> expectedMatchesDTO = matchesForUser.stream().map(TestUtils::buildMatchDTO)
                 .collect(Collectors.toList());
 
         when(matchService.findAllMatchesForUser(userId))
                 .thenReturn(matchesForUser);
 
-        UserMatchesDTO userMatches = new MatchController(matchService)
+        UserMatchesDTO actualUserMatches = matchController
                 .getAllMatchesForUser(userId);
 
-        assertAll("Verify userMatches", () -> assertThat(userMatches.getUserId()).isEqualTo(userId),
-                () -> assertThat(userMatches.getMatches())
+        assertAll("Verify userMatches", () -> assertThat(actualUserMatches.getUserId()).isEqualTo(userId),
+                () -> assertThat(actualUserMatches.getMatches())
                         .usingFieldByFieldElementComparator().containsAll(expectedMatchesDTO));
 
     }
 
     @Test
     public void shouldReturnEmptyListWhenNoMatchesForTheUser() {
-        UUID userId = UUID.randomUUID();
 
-        when(matchService.findAllMatchesForUser(userId))
+        when(matchService.findAllMatchesForUser(USER_ID))
                 .thenReturn(List.of());
 
-        UserMatchesDTO userMatches = new MatchController(matchService)
-                .getAllMatchesForUser(userId);
+        UserMatchesDTO actualUserMatches = matchController
+                .getAllMatchesForUser(USER_ID);
 
-        assertAll("Verify userMatches for no matches", () -> assertThat(userMatches.getUserId()).isEqualTo(userId),
-                () -> assertThat(userMatches.getMatches())
+        assertAll("Verify userMatches for no matches", () -> assertThat(actualUserMatches.getUserId()).isEqualTo(USER_ID),
+                () -> assertThat(actualUserMatches.getMatches())
                         .usingFieldByFieldElementComparator().isEmpty());
 
+    }
+
+    @Test
+    public void shouldFilterOutTheMatchesWithOutPhotos() {
+        Match aMatch = buildMatch(USER_ID);
+        List<MatchDTO> expectedMatches = List.of(buildMatchDTO(aMatch));
+
+        when(matchService.findAllMatchesForUserBasedOnFilter(USER_ID, true)).thenReturn(List.of(aMatch));
+
+        UserMatchesDTO actualUserMatches = matchController.filterOutTheMatchesFotUser(USER_ID, true);
+
+        assertThat(actualUserMatches.getMatches())
+                .usingFieldByFieldElementComparator()
+                .containsAll(expectedMatches);
+        assertThat(actualUserMatches.getUserId()).isEqualTo(USER_ID);
     }
 }

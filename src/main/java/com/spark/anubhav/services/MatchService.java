@@ -44,4 +44,8 @@ public class MatchService {
     private void setIdForAllMatches(List<Match> matchesForUser) {
         matchesForUser.forEach(m -> m.setId(UUID.randomUUID()));
     }
+
+    public List<Match> findAllMatchesForUserBasedOnFilter(UUID userId, boolean hasPhoto) {
+        throw new UnsupportedOperationException();
+    }
 }

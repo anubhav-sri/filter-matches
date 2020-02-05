@@ -23,4 +23,8 @@ public class MatchController {
     public UserMatchesDTO getAllMatchesForUser(@PathVariable("userId") UUID userId) {
         return MatchMapper.convertToDTO(userId, matchService.findAllMatchesForUser(userId));
     }
+
+    public UserMatchesDTO filterOutTheMatchesFotUser(UUID userId, boolean hasPhoto) {
+        return MatchMapper.convertToDTO(userId, matchService.findAllMatchesForUserBasedOnFilter(userId, hasPhoto));
+    }
 }
