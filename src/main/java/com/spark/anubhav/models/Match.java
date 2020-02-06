@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.net.URL;
 import java.util.UUID;
 
 @Builder
@@ -21,7 +22,7 @@ public class Match {
     @ManyToOne(cascade = CascadeType.ALL)
     private City city;
     private Integer height;
-    private String mainPhoto;
+    private URL mainPhoto;
     private BigDecimal compatibilityScore;
     private Integer numberOfContactsExchanged;
     private Boolean favourite;

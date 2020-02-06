@@ -3,20 +3,19 @@ package com.spark.anubhav.util;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spark.anubhav.models.City;
 import com.spark.anubhav.models.Match;
-import com.spark.anubhav.repositories.MatchRepository;
 import com.spark.anubhav.services.MatchService;
-import org.hamcrest.Matchers;
+import lombok.SneakyThrows;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.internal.matchers.Equals;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -30,9 +29,16 @@ class InitialDataLoaderTest {
     private MatchService matchService;
 
     private final UUID USER_ID = UUID.fromString("31eed42a-fdd1-4751-bcf3-00a4c8e40d7e");
-    private final Match FIRST_MATCH_EXPECTED = buildFirstMatch();
-    private final Match SECOND_MATCH_EXPECTED = buildSecondMatch();
+    private Match FIRST_MATCH_EXPECTED = buildFirstMatch();
+    private Match SECOND_MATCH_EXPECTED = buildSecondMatch();
     private ObjectMapper objectMapper = new ObjectMapper();
+
+    @BeforeEach
+    @SneakyThrows
+    public void setUp() {
+        FIRST_MATCH_EXPECTED = buildFirstMatch();
+        SECOND_MATCH_EXPECTED = buildSecondMatch();
+    }
 
     @Test
     public void shouldLoadMatchesFromJsonWhenEnabled() throws IOException {
@@ -71,12 +77,21 @@ class InitialDataLoaderTest {
                 .numberOfContactsExchanged(0)
                 .religion("Islam")
                 .favourite(false)
-                .mainPhoto("http://thecatapi.com/api/images/get?format=src&type=gif")
+                .mainPhoto(createMainPhotoURL())
                 .compatibilityScore(BigDecimal.valueOf(0.97))
                 .userId(USER_ID)
                 .build();
 
 
+    }
+
+
+    private URL createMainPhotoURL() {
+        try {
+            return new URL("http://thecatapi.com/api/images/get?format=src&type=gif");
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private Match buildFirstMatch() {
@@ -89,7 +104,7 @@ class InitialDataLoaderTest {
                 .numberOfContactsExchanged(2)
                 .religion("Atheist")
                 .favourite(true)
-                .mainPhoto("http://thecatapi.com/api/images/get?format=src&type=gif")
+                .mainPhoto(createMainPhotoURL())
                 .compatibilityScore(BigDecimal.valueOf(0.76))
                 .userId(USER_ID)
                 .build();
