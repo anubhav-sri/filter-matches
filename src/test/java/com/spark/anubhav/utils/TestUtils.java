@@ -29,14 +29,6 @@ public class TestUtils {
                 .build();
     }
 
-    private static URL createMainPhotoURL() {
-        try {
-            return new URL("http://mypics");
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public static MatchDTO buildMatchDTO(Match match) {
         City matchCity = match.getCity();
         CityDTO cityDTO = new CityDTO(
@@ -58,4 +50,13 @@ public class TestUtils {
                 .religion(match.getReligion())
                 .build();
     }
+
+    private static URL createMainPhotoURL() {
+        try {
+            return new URL("http://mypics");
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

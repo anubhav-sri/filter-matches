@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spark.anubhav.models.City;
 import com.spark.anubhav.models.Match;
 import com.spark.anubhav.services.MatchService;
-import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,7 +33,6 @@ class InitialDataLoaderTest {
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
-    @SneakyThrows
     public void setUp() {
         FIRST_MATCH_EXPECTED = buildFirstMatch();
         SECOND_MATCH_EXPECTED = buildSecondMatch();
