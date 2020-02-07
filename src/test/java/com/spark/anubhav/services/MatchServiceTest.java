@@ -1,5 +1,8 @@
 package com.spark.anubhav.services;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.spark.anubhav.filters.PhotoFilter;
+import com.spark.anubhav.filters.UserIdFilter;
 import com.spark.anubhav.models.Match;
 import com.spark.anubhav.repositories.MatchRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -68,12 +71,15 @@ class MatchServiceTest {
         Match aMatch = buildMatch(userId);
         List<Match> matchesForUser = Collections.singletonList(aMatch);
 
-        when(repository.findAllByFiltersForUser(userId, true))
+        BooleanExpression predicatedPassed = new UserIdFilter(userId).buildPredicate()
+                .and(new PhotoFilter(true).buildPredicate());
+
+        when(repository.findAll(predicatedPassed))
                 .thenReturn(matchesForUser);
 
-        List<Match> matches = matchService.findAllMatchesForUserBasedOnFilter(userId, true);
+        Iterable<Match> matches = matchService.findAllMatchesForUserBasedOnFilter(userId, true);
 
-        verify(repository).findAllByFiltersForUser(userId, true);
+        verify(repository).findAll(predicatedPassed);
         assertThat(matches).usingElementComparatorIgnoringFields("id").containsExactly(aMatch);
 
     }
