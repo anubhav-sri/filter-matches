@@ -17,6 +17,8 @@ test {
     useJUnitPlatform()
 }
 
+compileJava.options.annotationProcessorGeneratedSourcesDirectory = file("src/main/java")
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
@@ -27,6 +29,8 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:1.18.4")
     implementation 'org.projectlombok:lombok:1.18.4'
     implementation group: 'com.h2database', name: 'h2', version: '1.4.200'
+    compile "com.querydsl:querydsl-apt:4.2.2:jpa"
+    compile group: 'com.querydsl', name: 'querydsl-jpa', version: '4.2.2'
 
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit'
