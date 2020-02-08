@@ -28,6 +28,6 @@ public class MatchController {
     @GetMapping(value = "/users/{userId}/matches/filter")
     public UserMatchesDTO filterOutTheMatchesFotUser(@PathVariable UUID userId,
                                                      @RequestParam(required = false) Boolean hasPhoto) {
-        return MatchMapper.convertToDTO(userId, matchService.findAllMatchesForUserBasedOnFilter(userId, hasPhoto));
+        return MatchMapper.convertToDTO(userId, matchService.findAllMatchesForUserBasedOnFilter(userId, hasPhoto, null));
     }
 }

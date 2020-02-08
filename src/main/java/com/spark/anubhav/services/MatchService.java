@@ -44,17 +44,18 @@ public class MatchService {
         return savedMatches;
     }
 
-    public List<Match> findAllMatchesForUserBasedOnFilter(@Nonnull UUID userId, Boolean hasPhoto) {
+    public List<Match> findAllMatchesForUserBasedOnFilter(@Nonnull UUID userId, Boolean hasPhoto, Boolean isFavorite) {
 
-        Predicate predicate = createPredicateForTheFilters(userId, hasPhoto);
+        Predicate predicate = createPredicateForTheFilters(userId, hasPhoto, isFavorite);
 
         return (List<Match>) matchRepository.findAll(predicate);
     }
 
-    private Predicate createPredicateForTheFilters(UUID userId, Boolean hasPhoto) {
+    private Predicate createPredicateForTheFilters(UUID userId, Boolean hasPhoto, Boolean isFavorite) {
         return PredicateBuilder.builder()
                 .forUser(userId)
                 .hasPhoto(hasPhoto)
+                .isFavorite(isFavorite)
                 .build();
     }
 

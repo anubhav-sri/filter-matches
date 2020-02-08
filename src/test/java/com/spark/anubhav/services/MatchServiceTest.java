@@ -1,6 +1,7 @@
 package com.spark.anubhav.services;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.spark.anubhav.filters.FavouriteFilter;
 import com.spark.anubhav.filters.PhotoFilter;
 import com.spark.anubhav.filters.UserIdFilter;
 import com.spark.anubhav.models.Match;
@@ -15,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
+import static com.spark.anubhav.utils.TestUtils.buildBaseMatch;
 import static com.spark.anubhav.utils.TestUtils.buildMatch;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -77,10 +79,34 @@ class MatchServiceTest {
         when(repository.findAll(predicatedPassed))
                 .thenReturn(matchesForUser);
 
-        Iterable<Match> matches = matchService.findAllMatchesForUserBasedOnFilter(userId, true);
+        Iterable<Match> matches = matchService.findAllMatchesForUserBasedOnFilter(userId,
+                true,
+                null);
 
         verify(repository).findAll(predicatedPassed);
-        assertThat(matches).usingElementComparatorIgnoringFields("id").containsExactly(aMatch);
+        assertThat(matches).containsExactly(aMatch);
+
+    }
+
+    @Test
+    public void shouldBeAbleToGetOnlyFavoriteMatch() {
+        UUID userId = UUID.randomUUID();
+        Match favoriteMatch = buildBaseMatch(userId)
+                .favourite(true)
+                .build();
+
+        List<Match> matchesForUser = Collections.singletonList(favoriteMatch);
+
+        BooleanExpression expectedPredicatePassed = new UserIdFilter(userId).buildPredicate()
+                .and(new FavouriteFilter(true).buildPredicate());
+
+        when(repository.findAll(expectedPredicatePassed))
+                .thenReturn(matchesForUser);
+
+        Iterable<Match> matches = matchService.findAllMatchesForUserBasedOnFilter(userId, null, true);
+
+        verify(repository).findAll(expectedPredicatePassed);
+        assertThat(matches).containsExactly(favoriteMatch);
 
     }
 

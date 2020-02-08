@@ -73,7 +73,7 @@ class MatchControllerTest {
         Match aMatch = buildMatch(USER_ID);
         List<MatchDTO> expectedMatches = List.of(buildMatchDTO(aMatch));
 
-        when(matchService.findAllMatchesForUserBasedOnFilter(USER_ID, true)).thenReturn(List.of(aMatch));
+        when(matchService.findAllMatchesForUserBasedOnFilter(USER_ID, true, null)).thenReturn(List.of(aMatch));
 
         UserMatchesDTO actualUserMatches = matchController.filterOutTheMatchesFotUser(USER_ID, true);
 
