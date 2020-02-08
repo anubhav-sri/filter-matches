@@ -46,4 +46,32 @@ class PredicateBuilderTest {
         assertThat(actualPredicate).isEqualTo(expectedPredicate);
     }
 
+    @Test
+    public void shouldNotAddToPredicateIfIsFavoriteIsNull() {
+        UUID userId = UUID.randomUUID();
+        Predicate actualPredicate = PredicateBuilder.builder()
+                .forUser(userId)
+                .hasPhoto(null)
+                .isFavorite(null)
+                .build();
+
+        Predicate expectedPredicate = new UserIdFilter(userId).buildPredicate();
+        assertThat(actualPredicate).isEqualTo(expectedPredicate);
+    }
+
+    @Test
+    public void shouldBuildPredicateCombiningUserIdAndIsFavorite() {
+        UUID userId = UUID.randomUUID();
+        Predicate actualPredicate = PredicateBuilder.builder()
+                .forUser(userId)
+                .isFavorite(true)
+                .build();
+
+        Predicate expectedPredicate = new UserIdFilter(userId).buildPredicate()
+                .and(new FavouriteFilter(true).buildPredicate());
+
+        assertThat(actualPredicate).isEqualTo(expectedPredicate);
+    }
+
+
 }
