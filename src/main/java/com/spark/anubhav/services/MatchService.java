@@ -1,10 +1,7 @@
 package com.spark.anubhav.services;
 
 import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.spark.anubhav.filters.PhotoFilter;
 import com.spark.anubhav.filters.PredicateBuilder;
-import com.spark.anubhav.filters.UserIdFilter;
 import com.spark.anubhav.models.Match;
 import com.spark.anubhav.repositories.MatchRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -47,14 +44,14 @@ public class MatchService {
         return savedMatches;
     }
 
-    public List<Match> findAllMatchesForUserBasedOnFilter(@Nonnull UUID userId, boolean hasPhoto) {
+    public List<Match> findAllMatchesForUserBasedOnFilter(@Nonnull UUID userId, Boolean hasPhoto) {
 
         Predicate predicate = createPredicateForTheFilters(userId, hasPhoto);
 
         return (List<Match>) matchRepository.findAll(predicate);
     }
 
-    private Predicate createPredicateForTheFilters(UUID userId, boolean hasPhoto) {
+    private Predicate createPredicateForTheFilters(UUID userId, Boolean hasPhoto) {
         return PredicateBuilder.builder()
                 .forUser(userId)
                 .hasPhoto(hasPhoto)
