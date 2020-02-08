@@ -27,12 +27,23 @@ class PredicateBuilderTest {
 
     @Test
     public void shouldThrowUserIdCannotBeNullExceptionIfUserIdIsProvidedAsNull() {
-
         assertThrows(UserIdCannotBeNullException.class, () ->
                 PredicateBuilder.builder()
                         .forUser(null)
                         .hasPhoto(true)
                         .build());
+    }
+
+    @Test
+    public void shouldNotAddToPredicateIfHasPhotoIsNull() {
+        UUID userId = UUID.randomUUID();
+        Predicate actualPredicate = PredicateBuilder.builder()
+                .forUser(userId)
+                .hasPhoto(null)
+                .build();
+
+        Predicate expectedPredicate = new UserIdFilter(userId).buildPredicate();
+        assertThat(actualPredicate).isEqualTo(expectedPredicate);
     }
 
 }

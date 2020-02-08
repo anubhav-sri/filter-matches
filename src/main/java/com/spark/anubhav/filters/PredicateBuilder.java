@@ -24,8 +24,10 @@ public class PredicateBuilder {
         return this;
     }
 
-    public PredicateBuilder hasPhoto(boolean hasPhoto) {
-        filterList.add(new PhotoFilter(hasPhoto));
+    public PredicateBuilder hasPhoto(Boolean hasPhoto) {
+        if (hasPhoto != null) {
+            filterList.add(new PhotoFilter(hasPhoto));
+        }
         return this;
     }
 
