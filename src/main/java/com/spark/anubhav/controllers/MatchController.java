@@ -6,6 +6,7 @@ import com.spark.anubhav.services.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
@@ -24,7 +25,9 @@ public class MatchController {
         return MatchMapper.convertToDTO(userId, matchService.findAllMatchesForUser(userId));
     }
 
-    public UserMatchesDTO filterOutTheMatchesFotUser(UUID userId, boolean hasPhoto) {
+    @GetMapping(value = "/users/{userId}/matches/filter")
+    public UserMatchesDTO filterOutTheMatchesFotUser(@PathVariable UUID userId,
+                                                     @RequestParam(required = false) Boolean hasPhoto) {
         return MatchMapper.convertToDTO(userId, matchService.findAllMatchesForUserBasedOnFilter(userId, hasPhoto));
     }
 }

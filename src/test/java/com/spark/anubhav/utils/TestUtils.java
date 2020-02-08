@@ -51,6 +51,21 @@ public class TestUtils {
                 .build();
     }
 
+    public static Match.MatchBuilder buildBaseMatch(UUID userId) {
+        return Match.builder()
+                .age(34)
+                .city(new City("cityName", 78.8, 79.9))
+                .compatibilityScore(BigDecimal.valueOf(54.34))
+                .height(170)
+                .displayName("Cool Name")
+                .favourite(false)
+                .jobTitle("Job1")
+                .mainPhoto(createMainPhotoURL())
+                .numberOfContactsExchanged(0)
+                .religion("Athiest")
+                .userId(userId);
+    }
+
     private static URL createMainPhotoURL() {
         try {
             return new URL("http://mypics");
