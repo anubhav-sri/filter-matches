@@ -19,11 +19,4 @@ class PhotoFilterTest {
         BooleanExpression booleanExpression = new PhotoFilter(false).buildPredicate();
         assertThat(booleanExpression).isEqualTo(QMatch.match.mainPhoto.isNull());
     }
-
-    @Test
-    public void shouldReturnNullIfTheHasPhotoIsNull() {
-        BooleanExpression booleanExpression = new PhotoFilter(null).buildPredicate();
-        assertThat(booleanExpression).isNull();
-    }
-
 }
