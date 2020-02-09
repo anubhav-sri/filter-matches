@@ -16,6 +16,7 @@ public class MatchQueryFilters {
     private Boolean isFavorite;
     @Valid
     private CompatibilityRange compatibilityRange;
+    @Valid
     private AgeRange ageRange;
     private HeightRange heightRange;
     private Boolean inContact;
