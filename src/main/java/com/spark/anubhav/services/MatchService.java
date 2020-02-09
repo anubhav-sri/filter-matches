@@ -59,6 +59,7 @@ public class MatchService {
                 .isFavorite(queryFilters.getIsFavorite())
                 .withCompatibility(queryFilters.getCompatibilityRange())
                 .withAgeBetween(queryFilters.getAgeRange())
+                .withHeightBetween(queryFilters.getHeightRange())
                 .build();
     }
 

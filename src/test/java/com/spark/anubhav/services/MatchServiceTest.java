@@ -2,10 +2,7 @@ package com.spark.anubhav.services;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.spark.anubhav.filters.*;
-import com.spark.anubhav.models.AgeRange;
-import com.spark.anubhav.models.CompatibilityRange;
-import com.spark.anubhav.models.Match;
-import com.spark.anubhav.models.MatchQueryFilters;
+import com.spark.anubhav.models.*;
 import com.spark.anubhav.repositories.MatchRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -82,7 +79,7 @@ class MatchServiceTest {
                 .thenReturn(matchesForUser);
 
         Iterable<Match> matches = matchService.findAllMatchesForUserBasedOnFilter(userId,
-                new MatchQueryFilters(true, null, null, null));
+                new MatchQueryFilters(true, null, null, null, null));
 
         verify(repository).findAll(predicatedPassed);
         assertThat(matches).containsExactly(aMatch);
@@ -104,7 +101,7 @@ class MatchServiceTest {
         when(repository.findAll(expectedPredicatePassed))
                 .thenReturn(matchesForUser);
 
-        MatchQueryFilters matchQueryFilters = new MatchQueryFilters(null, true, null, null);
+        MatchQueryFilters matchQueryFilters = new MatchQueryFilters(null, true, null, null, null);
         Iterable<Match> matches = matchService.findAllMatchesForUserBasedOnFilter(userId, matchQueryFilters);
 
         verify(repository).findAll(expectedPredicatePassed);
@@ -128,7 +125,7 @@ class MatchServiceTest {
         when(repository.findAll(expectedPredicatePassed))
                 .thenReturn(matchesForUser);
 
-        MatchQueryFilters matchQueryFilters = new MatchQueryFilters(null, null, range, null);
+        MatchQueryFilters matchQueryFilters = new MatchQueryFilters(null, null, range, null, null);
         Iterable<Match> matches = matchService.findAllMatchesForUserBasedOnFilter(userId, matchQueryFilters);
 
         verify(repository).findAll(expectedPredicatePassed);
@@ -153,7 +150,7 @@ class MatchServiceTest {
                 .thenReturn(matchesForUser);
 
         MatchQueryFilters matchQueryFilters = new MatchQueryFilters(null,
-                null, null, range);
+                null, null, range, null);
         Iterable<Match> matches = matchService.findAllMatchesForUserBasedOnFilter(userId, matchQueryFilters);
 
         verify(repository).findAll(expectedPredicatePassed);
@@ -161,5 +158,29 @@ class MatchServiceTest {
 
     }
 
+    @Test
+    public void shouldBeAbleToGetOnlyMatchesLyingInTheHeightRange() {
+        UUID userId = UUID.randomUUID();
+        Match matchWithInRangeHeight = buildBaseMatch(userId)
+                .height(167)
+                .build();
+
+        List<Match> matchesForUser = Collections.singletonList(matchWithInRangeHeight);
+
+        HeightRange range = new HeightRange(135, 210);
+        BooleanExpression expectedPredicatePassed = new UserIdFilter(userId).buildPredicate()
+                .and(new HeightFilter(range).buildPredicate());
+
+        when(repository.findAll(expectedPredicatePassed))
+                .thenReturn(matchesForUser);
+
+        MatchQueryFilters matchQueryFilters = new MatchQueryFilters(null,
+                null, null, null, range);
+        Iterable<Match> matches = matchService.findAllMatchesForUserBasedOnFilter(userId, matchQueryFilters);
+
+        verify(repository).findAll(expectedPredicatePassed);
+        assertThat(matches).containsExactly(matchWithInRangeHeight);
+
+    }
 
 }
