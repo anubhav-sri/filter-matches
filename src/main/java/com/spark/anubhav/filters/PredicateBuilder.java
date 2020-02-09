@@ -66,4 +66,10 @@ public class PredicateBuilder {
             this.filterList.add(new HeightFilter(heightRange));
         return this;
     }
+
+    public PredicateBuilder isAlreadyAContact(Boolean isAContact) {
+        if (isAContact != null)
+            filterList.add(new InContactFilter(isAContact));
+        return this;
+    }
 }

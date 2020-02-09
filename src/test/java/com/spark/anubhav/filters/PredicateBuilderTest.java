@@ -158,4 +158,29 @@ class PredicateBuilderTest {
         assertThat(actualPredicate).isEqualTo(expectedPredicate);
     }
 
+    @Test
+    public void shouldBuildPredicateCombiningUserIdAndContactsExchanged() {
+        UUID userId = UUID.randomUUID();
+        Predicate actualPredicate = PredicateBuilder.builder()
+                .forUser(userId)
+                .isAlreadyAContact(true)
+                .build();
+
+        Predicate expectedPredicate = new UserIdFilter(userId).buildPredicate()
+                .and(new InContactFilter(true).buildPredicate());
+
+        assertThat(actualPredicate).isEqualTo(expectedPredicate);
+    }
+
+    @Test
+    public void shouldNotAddInContactPredicateIfIsInContactIsNull() {
+        UUID userId = UUID.randomUUID();
+        Predicate actualPredicate = PredicateBuilder.builder()
+                .forUser(userId)
+                .isAlreadyAContact(null)
+                .build();
+
+        Predicate expectedPredicate = new UserIdFilter(userId).buildPredicate();
+        assertThat(actualPredicate).isEqualTo(expectedPredicate);
+    }
 }
