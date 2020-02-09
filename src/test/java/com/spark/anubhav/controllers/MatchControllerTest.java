@@ -1,5 +1,6 @@
 package com.spark.anubhav.controllers;
 
+import com.spark.anubhav.models.AgeRange;
 import com.spark.anubhav.models.CompatibilityRange;
 import com.spark.anubhav.models.Match;
 import com.spark.anubhav.models.DTOs.MatchDTO;
@@ -17,8 +18,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static com.spark.anubhav.utils.TestUtils.buildMatch;
-import static com.spark.anubhav.utils.TestUtils.buildMatchDTO;
+import static com.spark.anubhav.utils.TestUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.when;
@@ -75,7 +75,28 @@ class MatchControllerTest {
         Match aMatch = buildMatch(USER_ID);
         List<MatchDTO> expectedMatches = List.of(buildMatchDTO(aMatch));
 
-        MatchQueryFilters matchQueryFilters = new MatchQueryFilters(true, null, new CompatibilityRange(), null);
+        MatchQueryFilters matchQueryFilters = new MatchQueryFilters(true, null,
+                null, null);
+        when(matchService.findAllMatchesForUserBasedOnFilter(USER_ID, matchQueryFilters)).thenReturn(List.of(aMatch));
+
+        UserMatchesDTO actualUserMatches = matchController.filterOutTheMatchesFotUser(USER_ID, matchQueryFilters);
+
+        assertThat(actualUserMatches.getMatches())
+                .usingFieldByFieldElementComparator()
+                .containsAll(expectedMatches);
+        assertThat(actualUserMatches.getUserId()).isEqualTo(USER_ID);
+    }
+
+    @Test
+    public void shouldFilterOutTheMatchesNotInRangeOfAge() {
+        Match aMatch = buildBaseMatch(USER_ID)
+                .age(19)
+                .build();
+        
+        List<MatchDTO> expectedMatches = List.of(buildMatchDTO(aMatch));
+
+        MatchQueryFilters matchQueryFilters = new MatchQueryFilters(null, null,
+                null, new AgeRange(18, 56));
         when(matchService.findAllMatchesForUserBasedOnFilter(USER_ID, matchQueryFilters)).thenReturn(List.of(aMatch));
 
         UserMatchesDTO actualUserMatches = matchController.filterOutTheMatchesFotUser(USER_ID, matchQueryFilters);

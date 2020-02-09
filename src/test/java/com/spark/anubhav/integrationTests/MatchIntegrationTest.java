@@ -131,6 +131,34 @@ class MatchIntegrationTest {
 
     }
 
+    @Test
+    void shouldFilterOutTheMatchesNotLyingInGivenAgeRange() throws Exception {
+        Match compatibleMatches = buildBaseMatch(USER_ID)
+                .id(UUID.randomUUID())
+                .age(45)
+                .build();
+        Match nonCompatibleMatches = buildBaseMatch(USER_ID)
+                .id(UUID.randomUUID())
+                .age(49)
+                .build();
+
+        matchRepository.save(compatibleMatches);
+        matchRepository.save(nonCompatibleMatches);
+
+        MatchDTO expectedMatch = buildMatchDTO(compatibleMatches);
+        UserMatchesDTO expectedUserMatches = new UserMatchesDTO(USER_ID, List.of(expectedMatch));
+
+        MockHttpServletRequestBuilder requestBuilder = get(String.format("/users/%s/matches/filter", USER_ID));
+        requestBuilder.param("ageRange.from", "40");
+        requestBuilder.param("ageRange.to", "46");
+
+        this.mockMvc
+                .perform(requestBuilder)
+                .andExpect(status().isOk())
+                .andExpect(content().string(objectMapper.writeValueAsString(expectedUserMatches)));
+
+    }
+
     private Match createNonFavoriteMatch() {
         return buildBaseMatch(USER_ID)
                 .id(UUID.randomUUID())
