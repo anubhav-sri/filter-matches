@@ -2,7 +2,7 @@ package com.spark.anubhav.filters;
 
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.spark.anubhav.models.QMatch;
+import com.spark.anubhav.models.CompatibilityRange;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +35,11 @@ public class PredicateBuilder {
     public PredicateBuilder isFavorite(Boolean isFavorite) {
         if (isFavorite != null)
             filterList.add(new FavouriteFilter(isFavorite));
+        return this;
+    }
+
+    public PredicateBuilder withCompatibility(CompatibilityRange compatibilityRange) {
+        this.filterList.add(new CompatibilityScoreFilter(compatibilityRange));
         return this;
     }
 
