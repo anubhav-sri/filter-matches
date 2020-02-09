@@ -3,6 +3,7 @@ package com.spark.anubhav.controllers;
 import com.spark.anubhav.models.Match;
 import com.spark.anubhav.models.DTOs.MatchDTO;
 import com.spark.anubhav.models.DTOs.UserMatchesDTO;
+import com.spark.anubhav.models.MatchQueryFilters;
 import com.spark.anubhav.services.MatchService;
 import com.spark.anubhav.utils.TestUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -73,9 +74,10 @@ class MatchControllerTest {
         Match aMatch = buildMatch(USER_ID);
         List<MatchDTO> expectedMatches = List.of(buildMatchDTO(aMatch));
 
-        when(matchService.findAllMatchesForUserBasedOnFilter(USER_ID, true, null)).thenReturn(List.of(aMatch));
+        MatchQueryFilters matchQueryFilters = new MatchQueryFilters(true, null);
+        when(matchService.findAllMatchesForUserBasedOnFilter(USER_ID, matchQueryFilters)).thenReturn(List.of(aMatch));
 
-        UserMatchesDTO actualUserMatches = matchController.filterOutTheMatchesFotUser(USER_ID, true);
+        UserMatchesDTO actualUserMatches = matchController.filterOutTheMatchesFotUser(USER_ID, matchQueryFilters);
 
         assertThat(actualUserMatches.getMatches())
                 .usingFieldByFieldElementComparator()

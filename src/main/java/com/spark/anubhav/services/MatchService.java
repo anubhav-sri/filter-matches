@@ -3,6 +3,7 @@ package com.spark.anubhav.services;
 import com.querydsl.core.types.Predicate;
 import com.spark.anubhav.filters.PredicateBuilder;
 import com.spark.anubhav.models.Match;
+import com.spark.anubhav.models.MatchQueryFilters;
 import com.spark.anubhav.repositories.MatchRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -44,18 +45,18 @@ public class MatchService {
         return savedMatches;
     }
 
-    public List<Match> findAllMatchesForUserBasedOnFilter(@Nonnull UUID userId, Boolean hasPhoto, Boolean isFavorite) {
+    public List<Match> findAllMatchesForUserBasedOnFilter(@Nonnull UUID userId, MatchQueryFilters matchQueryFilters) {
 
-        Predicate predicate = createPredicateForTheFilters(userId, hasPhoto, isFavorite);
+        Predicate predicate = createPredicateForTheFilters(userId, matchQueryFilters);
 
         return (List<Match>) matchRepository.findAll(predicate);
     }
 
-    private Predicate createPredicateForTheFilters(UUID userId, Boolean hasPhoto, Boolean isFavorite) {
+    private Predicate createPredicateForTheFilters(UUID userId, MatchQueryFilters queryFilters) {
         return PredicateBuilder.builder()
                 .forUser(userId)
-                .hasPhoto(hasPhoto)
-                .isFavorite(isFavorite)
+                .hasPhoto(queryFilters.getHasPhoto())
+                .isFavorite(queryFilters.getIsFavorite())
                 .build();
     }
 

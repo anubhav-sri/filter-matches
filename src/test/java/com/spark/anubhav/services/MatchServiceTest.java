@@ -5,6 +5,7 @@ import com.spark.anubhav.filters.FavouriteFilter;
 import com.spark.anubhav.filters.PhotoFilter;
 import com.spark.anubhav.filters.UserIdFilter;
 import com.spark.anubhav.models.Match;
+import com.spark.anubhav.models.MatchQueryFilters;
 import com.spark.anubhav.repositories.MatchRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -80,8 +81,7 @@ class MatchServiceTest {
                 .thenReturn(matchesForUser);
 
         Iterable<Match> matches = matchService.findAllMatchesForUserBasedOnFilter(userId,
-                true,
-                null);
+                new MatchQueryFilters(true, null));
 
         verify(repository).findAll(predicatedPassed);
         assertThat(matches).containsExactly(aMatch);
@@ -103,7 +103,7 @@ class MatchServiceTest {
         when(repository.findAll(expectedPredicatePassed))
                 .thenReturn(matchesForUser);
 
-        Iterable<Match> matches = matchService.findAllMatchesForUserBasedOnFilter(userId, null, true);
+        Iterable<Match> matches = matchService.findAllMatchesForUserBasedOnFilter(userId, new MatchQueryFilters(null, true));
 
         verify(repository).findAll(expectedPredicatePassed);
         assertThat(matches).containsExactly(favoriteMatch);

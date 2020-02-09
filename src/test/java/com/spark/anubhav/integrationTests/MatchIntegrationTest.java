@@ -65,7 +65,6 @@ class MatchIntegrationTest {
                 .build();
         anotherMatch.setId(UUID.randomUUID());
 
-
         matchRepository.save(aMatch);
         matchRepository.save(anotherMatch);
 
@@ -80,6 +79,41 @@ class MatchIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(objectMapper.writeValueAsString(expectedUserMatches)));
 
+    }
+
+    @Test
+    void shouldFilterTheNonFavoriteMatchesForTheUser() throws Exception {
+        Match favoriteMatch = createFavoriteMatch();
+        Match nonFavoriteMatch = createNonFavoriteMatch();
+
+        matchRepository.save(favoriteMatch);
+        matchRepository.save(nonFavoriteMatch);
+
+        MatchDTO expectedMatch = buildMatchDTO(favoriteMatch);
+        UserMatchesDTO expectedUserMatches = new UserMatchesDTO(USER_ID, List.of(expectedMatch));
+
+        MockHttpServletRequestBuilder requestBuilder = get(String.format("/users/%s/matches/filter", USER_ID));
+        requestBuilder.param("isFavorite", String.valueOf(true));
+
+        this.mockMvc
+                .perform(requestBuilder)
+                .andExpect(status().isOk())
+                .andExpect(content().string(objectMapper.writeValueAsString(expectedUserMatches)));
+
+    }
+
+    private Match createNonFavoriteMatch() {
+        return buildBaseMatch(USER_ID)
+                .id(UUID.randomUUID())
+                .favourite(false)
+                .build();
+    }
+
+    private Match createFavoriteMatch() {
+        return buildBaseMatch(USER_ID)
+                .favourite(true)
+                .id(UUID.randomUUID())
+                .build();
     }
 
     @AfterEach
