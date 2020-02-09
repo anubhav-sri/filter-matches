@@ -1,5 +1,6 @@
 package com.spark.anubhav.controllers;
 
+import com.spark.anubhav.models.CompatibilityRange;
 import com.spark.anubhav.models.Match;
 import com.spark.anubhav.models.DTOs.MatchDTO;
 import com.spark.anubhav.models.DTOs.UserMatchesDTO;
@@ -74,7 +75,7 @@ class MatchControllerTest {
         Match aMatch = buildMatch(USER_ID);
         List<MatchDTO> expectedMatches = List.of(buildMatchDTO(aMatch));
 
-        MatchQueryFilters matchQueryFilters = new MatchQueryFilters(true, null);
+        MatchQueryFilters matchQueryFilters = new MatchQueryFilters(true, null, new CompatibilityRange());
         when(matchService.findAllMatchesForUserBasedOnFilter(USER_ID, matchQueryFilters)).thenReturn(List.of(aMatch));
 
         UserMatchesDTO actualUserMatches = matchController.filterOutTheMatchesFotUser(USER_ID, matchQueryFilters);

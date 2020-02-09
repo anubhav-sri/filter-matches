@@ -1,9 +1,11 @@
 package com.spark.anubhav.services;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.spark.anubhav.filters.CompatibilityScoreFilter;
 import com.spark.anubhav.filters.FavouriteFilter;
 import com.spark.anubhav.filters.PhotoFilter;
 import com.spark.anubhav.filters.UserIdFilter;
+import com.spark.anubhav.models.CompatibilityRange;
 import com.spark.anubhav.models.Match;
 import com.spark.anubhav.models.MatchQueryFilters;
 import com.spark.anubhav.repositories.MatchRepository;
@@ -13,6 +15,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -81,7 +84,7 @@ class MatchServiceTest {
                 .thenReturn(matchesForUser);
 
         Iterable<Match> matches = matchService.findAllMatchesForUserBasedOnFilter(userId,
-                new MatchQueryFilters(true, null));
+                new MatchQueryFilters(true, null, null));
 
         verify(repository).findAll(predicatedPassed);
         assertThat(matches).containsExactly(aMatch);
@@ -103,10 +106,35 @@ class MatchServiceTest {
         when(repository.findAll(expectedPredicatePassed))
                 .thenReturn(matchesForUser);
 
-        Iterable<Match> matches = matchService.findAllMatchesForUserBasedOnFilter(userId, new MatchQueryFilters(null, true));
+        MatchQueryFilters matchQueryFilters = new MatchQueryFilters(null, true, null);
+        Iterable<Match> matches = matchService.findAllMatchesForUserBasedOnFilter(userId, matchQueryFilters);
 
         verify(repository).findAll(expectedPredicatePassed);
         assertThat(matches).containsExactly(favoriteMatch);
+
+    }
+
+    @Test
+    public void shouldBeAbleToGetOnlyCompatibleMatches() {
+        UUID userId = UUID.randomUUID();
+        Match compatibleMatch = buildBaseMatch(userId)
+                .compatibilityScore(BigDecimal.valueOf(0.67))
+                .build();
+
+        List<Match> matchesForUser = Collections.singletonList(compatibleMatch);
+
+        CompatibilityRange range = new CompatibilityRange(BigDecimal.valueOf(0.56), BigDecimal.valueOf(0.89));
+        BooleanExpression expectedPredicatePassed = new UserIdFilter(userId).buildPredicate()
+                .and(new CompatibilityScoreFilter(range).buildPredicate());
+
+        when(repository.findAll(expectedPredicatePassed))
+                .thenReturn(matchesForUser);
+
+        MatchQueryFilters matchQueryFilters = new MatchQueryFilters(null, null, range);
+        Iterable<Match> matches = matchService.findAllMatchesForUserBasedOnFilter(userId, matchQueryFilters);
+
+        verify(repository).findAll(expectedPredicatePassed);
+        assertThat(matches).containsExactly(compatibleMatch);
 
     }
 

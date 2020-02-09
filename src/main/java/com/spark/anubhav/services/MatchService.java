@@ -57,6 +57,7 @@ public class MatchService {
                 .forUser(userId)
                 .hasPhoto(queryFilters.getHasPhoto())
                 .isFavorite(queryFilters.getIsFavorite())
+                .withCompatibility(queryFilters.getCompatibilityRange())
                 .build();
     }
 

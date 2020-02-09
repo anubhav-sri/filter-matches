@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -94,6 +95,34 @@ class MatchIntegrationTest {
 
         MockHttpServletRequestBuilder requestBuilder = get(String.format("/users/%s/matches/filter", USER_ID));
         requestBuilder.param("isFavorite", String.valueOf(true));
+
+        this.mockMvc
+                .perform(requestBuilder)
+                .andExpect(status().isOk())
+                .andExpect(content().string(objectMapper.writeValueAsString(expectedUserMatches)));
+
+    }
+
+    @Test
+    void shouldFilterOutTheNonCompatibleMatchesForTheUser() throws Exception {
+        Match compatibleMatches = buildBaseMatch(USER_ID)
+                .id(UUID.randomUUID())
+                .compatibilityScore(BigDecimal.valueOf(0.98))
+                .build();
+        Match nonCompatibleMatches = buildBaseMatch(USER_ID)
+                .id(UUID.randomUUID())
+                .compatibilityScore(BigDecimal.valueOf(0.67))
+                .build();
+
+        matchRepository.save(compatibleMatches);
+        matchRepository.save(nonCompatibleMatches);
+
+        MatchDTO expectedMatch = buildMatchDTO(compatibleMatches);
+        UserMatchesDTO expectedUserMatches = new UserMatchesDTO(USER_ID, List.of(expectedMatch));
+
+        MockHttpServletRequestBuilder requestBuilder = get(String.format("/users/%s/matches/filter", USER_ID));
+        requestBuilder.param("compatibilityRange.from", "0.69");
+        requestBuilder.param("compatibilityRange.to", "0.99");
 
         this.mockMvc
                 .perform(requestBuilder)
