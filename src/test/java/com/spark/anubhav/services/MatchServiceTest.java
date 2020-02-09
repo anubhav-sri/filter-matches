@@ -1,10 +1,8 @@
 package com.spark.anubhav.services;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.spark.anubhav.filters.CompatibilityScoreFilter;
-import com.spark.anubhav.filters.FavouriteFilter;
-import com.spark.anubhav.filters.PhotoFilter;
-import com.spark.anubhav.filters.UserIdFilter;
+import com.spark.anubhav.filters.*;
+import com.spark.anubhav.models.AgeRange;
 import com.spark.anubhav.models.CompatibilityRange;
 import com.spark.anubhav.models.Match;
 import com.spark.anubhav.models.MatchQueryFilters;
@@ -84,7 +82,7 @@ class MatchServiceTest {
                 .thenReturn(matchesForUser);
 
         Iterable<Match> matches = matchService.findAllMatchesForUserBasedOnFilter(userId,
-                new MatchQueryFilters(true, null, null));
+                new MatchQueryFilters(true, null, null, null));
 
         verify(repository).findAll(predicatedPassed);
         assertThat(matches).containsExactly(aMatch);
@@ -106,7 +104,7 @@ class MatchServiceTest {
         when(repository.findAll(expectedPredicatePassed))
                 .thenReturn(matchesForUser);
 
-        MatchQueryFilters matchQueryFilters = new MatchQueryFilters(null, true, null);
+        MatchQueryFilters matchQueryFilters = new MatchQueryFilters(null, true, null, null);
         Iterable<Match> matches = matchService.findAllMatchesForUserBasedOnFilter(userId, matchQueryFilters);
 
         verify(repository).findAll(expectedPredicatePassed);
@@ -130,12 +128,38 @@ class MatchServiceTest {
         when(repository.findAll(expectedPredicatePassed))
                 .thenReturn(matchesForUser);
 
-        MatchQueryFilters matchQueryFilters = new MatchQueryFilters(null, null, range);
+        MatchQueryFilters matchQueryFilters = new MatchQueryFilters(null, null, range, null);
         Iterable<Match> matches = matchService.findAllMatchesForUserBasedOnFilter(userId, matchQueryFilters);
 
         verify(repository).findAll(expectedPredicatePassed);
         assertThat(matches).containsExactly(compatibleMatch);
 
     }
+
+    @Test
+    public void shouldBeAbleToGetOnlyMatchesLyingInTheAgeRange() {
+        UUID userId = UUID.randomUUID();
+        Match agedMatch = buildBaseMatch(userId)
+                .age(67)
+                .build();
+
+        List<Match> matchesForUser = Collections.singletonList(agedMatch);
+
+        AgeRange range = new AgeRange(60, 68);
+        BooleanExpression expectedPredicatePassed = new UserIdFilter(userId).buildPredicate()
+                .and(new AgeFilter(range).buildPredicate());
+
+        when(repository.findAll(expectedPredicatePassed))
+                .thenReturn(matchesForUser);
+
+        MatchQueryFilters matchQueryFilters = new MatchQueryFilters(null,
+                null, null, range);
+        Iterable<Match> matches = matchService.findAllMatchesForUserBasedOnFilter(userId, matchQueryFilters);
+
+        verify(repository).findAll(expectedPredicatePassed);
+        assertThat(matches).containsExactly(agedMatch);
+
+    }
+
 
 }

@@ -11,10 +11,12 @@ public class MatchQueryFilters {
     private Boolean hasPhoto;
     private Boolean isFavorite;
     private CompatibilityRange compatibilityRange;
+    private AgeRange ageRange;
 
-    public MatchQueryFilters(Boolean hasPhoto, Boolean isFavorite, CompatibilityRange compatibilityRange) {
+    public MatchQueryFilters(Boolean hasPhoto, Boolean isFavorite, CompatibilityRange compatibilityRange, AgeRange ageRange) {
         this.hasPhoto = hasPhoto;
         this.isFavorite = isFavorite;
         this.compatibilityRange = compatibilityRange;
+        this.ageRange = ageRange;
     }
 }

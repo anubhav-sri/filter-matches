@@ -75,7 +75,7 @@ class MatchControllerTest {
         Match aMatch = buildMatch(USER_ID);
         List<MatchDTO> expectedMatches = List.of(buildMatchDTO(aMatch));
 
-        MatchQueryFilters matchQueryFilters = new MatchQueryFilters(true, null, new CompatibilityRange());
+        MatchQueryFilters matchQueryFilters = new MatchQueryFilters(true, null, new CompatibilityRange(), null);
         when(matchService.findAllMatchesForUserBasedOnFilter(USER_ID, matchQueryFilters)).thenReturn(List.of(aMatch));
 
         UserMatchesDTO actualUserMatches = matchController.filterOutTheMatchesFotUser(USER_ID, matchQueryFilters);

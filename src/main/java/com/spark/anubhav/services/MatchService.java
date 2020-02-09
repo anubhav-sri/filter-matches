@@ -58,6 +58,7 @@ public class MatchService {
                 .hasPhoto(queryFilters.getHasPhoto())
                 .isFavorite(queryFilters.getIsFavorite())
                 .withCompatibility(queryFilters.getCompatibilityRange())
+                .withAgeBetween(queryFilters.getAgeRange())
                 .build();
     }
 
