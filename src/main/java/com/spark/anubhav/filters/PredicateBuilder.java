@@ -2,6 +2,7 @@ package com.spark.anubhav.filters;
 
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.spark.anubhav.models.AgeRange;
 import com.spark.anubhav.models.CompatibilityRange;
 
 import java.util.ArrayList;
@@ -50,5 +51,12 @@ public class PredicateBuilder {
                 .stream()
                 .map(Filter::buildPredicate)
                 .reduce(BooleanExpression::and).orElseThrow();
+    }
+
+    public PredicateBuilder withAgeBetween(AgeRange ageRange) {
+        if (ageRange != null) {
+            this.filterList.add(new AgeFilter(ageRange));
+        }
+        return this;
     }
 }

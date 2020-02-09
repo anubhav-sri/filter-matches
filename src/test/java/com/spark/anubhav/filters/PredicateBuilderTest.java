@@ -2,6 +2,7 @@ package com.spark.anubhav.filters;
 
 import com.querydsl.core.types.Predicate;
 import com.spark.anubhav.exceptions.UserIdCannotBeNullException;
+import com.spark.anubhav.models.AgeRange;
 import com.spark.anubhav.models.CompatibilityRange;
 import org.junit.jupiter.api.Test;
 
@@ -101,4 +102,32 @@ class PredicateBuilderTest {
         Predicate expectedPredicate = new UserIdFilter(userId).buildPredicate();
         assertThat(actualPredicate).isEqualTo(expectedPredicate);
     }
+
+    @Test
+    public void shouldNotAddToPredicateIfAgeRangeIsNull() {
+        UUID userId = UUID.randomUUID();
+        Predicate actualPredicate = PredicateBuilder.builder()
+                .forUser(userId)
+                .withAgeBetween(null)
+                .build();
+
+        Predicate expectedPredicate = new UserIdFilter(userId).buildPredicate();
+        assertThat(actualPredicate).isEqualTo(expectedPredicate);
+    }
+
+    @Test
+    public void shouldBuildPredicateCombiningUserIdAndAgeLimits() {
+        UUID userId = UUID.randomUUID();
+        AgeRange ageRange = new AgeRange(18, 35);
+        Predicate actualPredicate = PredicateBuilder.builder()
+                .forUser(userId)
+                .withAgeBetween(ageRange)
+                .build();
+
+        Predicate expectedPredicate = new UserIdFilter(userId).buildPredicate()
+                .and(new AgeFilter(ageRange).buildPredicate());
+
+        assertThat(actualPredicate).isEqualTo(expectedPredicate);
+    }
+
 }
