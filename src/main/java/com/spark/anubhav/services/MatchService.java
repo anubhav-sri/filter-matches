@@ -46,10 +46,14 @@ public class MatchService {
     }
 
     public List<Match> findAllMatchesForUserBasedOnFilter(@Nonnull UUID userId, MatchQueryFilters matchQueryFilters) {
+        log.info("retrieving matches for user {} with filters {}", userId, matchQueryFilters.toString());
 
         Predicate predicate = createPredicateForTheFilters(userId, matchQueryFilters);
+        List<Match> matchesRetrieved = (List<Match>) matchRepository.findAll(predicate);
 
-        return (List<Match>) matchRepository.findAll(predicate);
+        log.info("successfully retrieved {} mactches for user {}", matchesRetrieved.size(), userId);
+
+        return matchesRetrieved;
     }
 
     private Predicate createPredicateForTheFilters(UUID userId, MatchQueryFilters queryFilters) {

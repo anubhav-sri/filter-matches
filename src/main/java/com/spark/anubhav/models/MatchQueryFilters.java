@@ -3,12 +3,14 @@ package com.spark.anubhav.models;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.Valid;
 
 @Getter
 @EqualsAndHashCode
 @Setter
+@ToString
 public class MatchQueryFilters {
     private Boolean hasPhoto;
     private Boolean isFavorite;
