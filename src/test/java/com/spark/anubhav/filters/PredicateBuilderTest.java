@@ -90,5 +90,15 @@ class PredicateBuilderTest {
         assertThat(actualPredicate).isEqualTo(expectedPredicate);
     }
 
+    @Test
+    public void shouldNotAddToPredicateIfCompatibilityRangeIsNull() {
+        UUID userId = UUID.randomUUID();
+        Predicate actualPredicate = PredicateBuilder.builder()
+                .forUser(userId)
+                .withCompatibility(null)
+                .build();
 
+        Predicate expectedPredicate = new UserIdFilter(userId).buildPredicate();
+        assertThat(actualPredicate).isEqualTo(expectedPredicate);
+    }
 }

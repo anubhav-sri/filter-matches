@@ -39,7 +39,9 @@ public class PredicateBuilder {
     }
 
     public PredicateBuilder withCompatibility(CompatibilityRange compatibilityRange) {
-        this.filterList.add(new CompatibilityScoreFilter(compatibilityRange));
+        if (compatibilityRange != null) {
+            this.filterList.add(new CompatibilityScoreFilter(compatibilityRange));
+        }
         return this;
     }
 
