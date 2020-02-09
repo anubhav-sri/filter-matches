@@ -4,6 +4,7 @@ import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.spark.anubhav.models.AgeRange;
 import com.spark.anubhav.models.CompatibilityRange;
+import com.spark.anubhav.models.HeightRange;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +58,12 @@ public class PredicateBuilder {
         if (ageRange != null) {
             this.filterList.add(new AgeFilter(ageRange));
         }
+        return this;
+    }
+
+    public PredicateBuilder withHeightBetween(HeightRange heightRange) {
+        if (heightRange != null)
+            this.filterList.add(new HeightFilter(heightRange));
         return this;
     }
 }

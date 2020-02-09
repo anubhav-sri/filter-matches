@@ -4,6 +4,7 @@ import com.querydsl.core.types.Predicate;
 import com.spark.anubhav.exceptions.UserIdCannotBeNullException;
 import com.spark.anubhav.models.AgeRange;
 import com.spark.anubhav.models.CompatibilityRange;
+import com.spark.anubhav.models.HeightRange;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -127,6 +128,33 @@ class PredicateBuilderTest {
         Predicate expectedPredicate = new UserIdFilter(userId).buildPredicate()
                 .and(new AgeFilter(ageRange).buildPredicate());
 
+        assertThat(actualPredicate).isEqualTo(expectedPredicate);
+    }
+
+    @Test
+    public void shouldBuildPredicateCombiningUserIdAndHeightLimit() {
+        UUID userId = UUID.randomUUID();
+        HeightRange heightRange = new HeightRange(178, 210);
+        Predicate actualPredicate = PredicateBuilder.builder()
+                .forUser(userId)
+                .withHeightBetween(heightRange)
+                .build();
+
+        Predicate expectedPredicate = new UserIdFilter(userId).buildPredicate()
+                .and(new HeightFilter(heightRange).buildPredicate());
+
+        assertThat(actualPredicate).isEqualTo(expectedPredicate);
+    }
+
+    @Test
+    public void shouldNotAddToHeioghtPredicateIfHeightRangeIsNull() {
+        UUID userId = UUID.randomUUID();
+        Predicate actualPredicate = PredicateBuilder.builder()
+                .forUser(userId)
+                .withHeightBetween(null)
+                .build();
+
+        Predicate expectedPredicate = new UserIdFilter(userId).buildPredicate();
         assertThat(actualPredicate).isEqualTo(expectedPredicate);
     }
 
