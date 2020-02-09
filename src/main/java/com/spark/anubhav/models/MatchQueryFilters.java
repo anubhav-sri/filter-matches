@@ -4,12 +4,15 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.Valid;
+
 @Getter
 @EqualsAndHashCode
 @Setter
 public class MatchQueryFilters {
     private Boolean hasPhoto;
     private Boolean isFavorite;
+    @Valid
     private CompatibilityRange compatibilityRange;
     private AgeRange ageRange;
     private HeightRange heightRange;

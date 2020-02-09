@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
@@ -28,7 +29,7 @@ public class MatchController {
 
     @GetMapping(value = "/users/{userId}/matches/filter")
     public UserMatchesDTO filterOutTheMatchesFotUser(@PathVariable UUID userId,
-                                                     MatchQueryFilters queryFilters) {
+                                                     @Valid MatchQueryFilters queryFilters) {
         return MatchMapper.convertToDTO(userId, matchService.findAllMatchesForUserBasedOnFilter(userId, queryFilters));
     }
 }
