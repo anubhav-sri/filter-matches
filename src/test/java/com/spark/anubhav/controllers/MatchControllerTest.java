@@ -75,7 +75,7 @@ class MatchControllerTest {
         List<MatchDTO> expectedMatches = List.of(buildMatchDTO(aMatch));
 
         MatchQueryFilters matchQueryFilters = new MatchQueryFilters(true, null,
-                null, null, null);
+                null, null, null, null);
         when(matchService.findAllMatchesForUserBasedOnFilter(USER_ID, matchQueryFilters)).thenReturn(List.of(aMatch));
 
         UserMatchesDTO actualUserMatches = matchController.filterOutTheMatchesFotUser(USER_ID, matchQueryFilters);
@@ -95,7 +95,7 @@ class MatchControllerTest {
         List<MatchDTO> expectedMatches = List.of(buildMatchDTO(aMatch));
 
         MatchQueryFilters matchQueryFilters = new MatchQueryFilters(null, null,
-                null, new AgeRange(18, 56), null);
+                null, new AgeRange(18, 56), null, null);
         when(matchService.findAllMatchesForUserBasedOnFilter(USER_ID, matchQueryFilters)).thenReturn(List.of(aMatch));
 
         UserMatchesDTO actualUserMatches = matchController.filterOutTheMatchesFotUser(USER_ID, matchQueryFilters);

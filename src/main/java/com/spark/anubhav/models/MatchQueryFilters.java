@@ -13,13 +13,15 @@ public class MatchQueryFilters {
     private CompatibilityRange compatibilityRange;
     private AgeRange ageRange;
     private HeightRange heightRange;
+    private Boolean inContact;
 
     public MatchQueryFilters(Boolean hasPhoto, Boolean isFavorite, CompatibilityRange compatibilityRange,
-                             AgeRange ageRange, HeightRange heightRange) {
+                             AgeRange ageRange, HeightRange heightRange, Boolean inContact) {
         this.hasPhoto = hasPhoto;
         this.isFavorite = isFavorite;
         this.compatibilityRange = compatibilityRange;
         this.ageRange = ageRange;
         this.heightRange = heightRange;
+        this.inContact = inContact;
     }
 }

@@ -79,7 +79,7 @@ class MatchServiceTest {
                 .thenReturn(matchesForUser);
 
         Iterable<Match> matches = matchService.findAllMatchesForUserBasedOnFilter(userId,
-                new MatchQueryFilters(true, null, null, null, null));
+                new MatchQueryFilters(true, null, null, null, null, null));
 
         verify(repository).findAll(predicatedPassed);
         assertThat(matches).containsExactly(aMatch);
@@ -101,7 +101,7 @@ class MatchServiceTest {
         when(repository.findAll(expectedPredicatePassed))
                 .thenReturn(matchesForUser);
 
-        MatchQueryFilters matchQueryFilters = new MatchQueryFilters(null, true, null, null, null);
+        MatchQueryFilters matchQueryFilters = new MatchQueryFilters(null, true, null, null, null, null);
         Iterable<Match> matches = matchService.findAllMatchesForUserBasedOnFilter(userId, matchQueryFilters);
 
         verify(repository).findAll(expectedPredicatePassed);
@@ -125,7 +125,7 @@ class MatchServiceTest {
         when(repository.findAll(expectedPredicatePassed))
                 .thenReturn(matchesForUser);
 
-        MatchQueryFilters matchQueryFilters = new MatchQueryFilters(null, null, range, null, null);
+        MatchQueryFilters matchQueryFilters = new MatchQueryFilters(null, null, range, null, null, null);
         Iterable<Match> matches = matchService.findAllMatchesForUserBasedOnFilter(userId, matchQueryFilters);
 
         verify(repository).findAll(expectedPredicatePassed);
@@ -150,7 +150,7 @@ class MatchServiceTest {
                 .thenReturn(matchesForUser);
 
         MatchQueryFilters matchQueryFilters = new MatchQueryFilters(null,
-                null, null, range, null);
+                null, null, range, null, null);
         Iterable<Match> matches = matchService.findAllMatchesForUserBasedOnFilter(userId, matchQueryFilters);
 
         verify(repository).findAll(expectedPredicatePassed);
@@ -175,7 +175,31 @@ class MatchServiceTest {
                 .thenReturn(matchesForUser);
 
         MatchQueryFilters matchQueryFilters = new MatchQueryFilters(null,
-                null, null, null, range);
+                null, null, null, range, null);
+        Iterable<Match> matches = matchService.findAllMatchesForUserBasedOnFilter(userId, matchQueryFilters);
+
+        verify(repository).findAll(expectedPredicatePassed);
+        assertThat(matches).containsExactly(matchWithInRangeHeight);
+
+    }
+
+    @Test
+    public void shouldBeAbleToGetOnlyMatchesWhichAreInContact() {
+        UUID userId = UUID.randomUUID();
+        Match matchWithInRangeHeight = buildBaseMatch(userId)
+                .numberOfContactsExchanged(3)
+                .build();
+
+        List<Match> matchesForUser = Collections.singletonList(matchWithInRangeHeight);
+
+        BooleanExpression expectedPredicatePassed = new UserIdFilter(userId).buildPredicate()
+                .and(new InContactFilter(true).buildPredicate());
+
+        when(repository.findAll(expectedPredicatePassed))
+                .thenReturn(matchesForUser);
+
+        MatchQueryFilters matchQueryFilters = new MatchQueryFilters(null,
+                null, null, null, null, true);
         Iterable<Match> matches = matchService.findAllMatchesForUserBasedOnFilter(userId, matchQueryFilters);
 
         verify(repository).findAll(expectedPredicatePassed);

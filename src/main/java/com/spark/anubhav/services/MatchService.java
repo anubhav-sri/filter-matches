@@ -60,6 +60,7 @@ public class MatchService {
                 .withCompatibility(queryFilters.getCompatibilityRange())
                 .withAgeBetween(queryFilters.getAgeRange())
                 .withHeightBetween(queryFilters.getHeightRange())
+                .isAlreadyAContact(queryFilters.getInContact())
                 .build();
     }
 
