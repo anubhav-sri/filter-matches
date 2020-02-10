@@ -4,7 +4,9 @@ import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.spark.anubhav.models.AgeRange;
 import com.spark.anubhav.models.CompatibilityRange;
+import com.spark.anubhav.models.DistanceRange;
 import com.spark.anubhav.models.HeightRange;
+import com.vividsolutions.jts.geom.GeometryFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,6 +72,13 @@ public class PredicateBuilder {
     public PredicateBuilder isAlreadyAContact(Boolean isAContact) {
         if (isAContact != null)
             filterList.add(new InContactFilter(isAContact));
+        return this;
+    }
+
+    public PredicateBuilder livingWithIn(DistanceRange distanceRange, double usersLatitude, double usersLongitude, GeometryFactory geometryFactory) {
+        if (distanceRange != null) {
+            filterList.add(new DistanceFilter(distanceRange, usersLatitude, usersLongitude, geometryFactory));
+        }
         return this;
     }
 }
