@@ -1,10 +1,12 @@
 package com.spark.anubhav.models;
 
+import com.vividsolutions.jts.geom.Point;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -16,6 +18,6 @@ import javax.persistence.Id;
 public class City {
     @Id
     private String name;
-    private Double latitude;
-    private Double longitude;
+    @Column(columnDefinition = "geometry")
+    private Point location;
 }

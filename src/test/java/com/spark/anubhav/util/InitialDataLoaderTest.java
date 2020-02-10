@@ -4,6 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spark.anubhav.models.City;
 import com.spark.anubhav.models.Match;
 import com.spark.anubhav.services.MatchService;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -66,12 +69,14 @@ class InitialDataLoaderTest {
     }
 
     private Match buildSecondMatch() {
+        Point locationPoint = new GeometryFactory()
+                .createPoint(new Coordinate(52.412811, -1.778197));
         return Match.builder()
                 .displayName("Sharon")
                 .age(47)
                 .jobTitle("Doctor")
                 .height(161)
-                .city(new City("Solihull", 52.412811, -1.778197))
+                .city(new City("Solihull", locationPoint))
                 .numberOfContactsExchanged(0)
                 .religion("Islam")
                 .favourite(false)
@@ -93,12 +98,15 @@ class InitialDataLoaderTest {
     }
 
     private Match buildFirstMatch() {
+        Point locationPoint = new GeometryFactory()
+                .createPoint(new Coordinate(53.801277, -1.548567));
+
         return Match.builder()
                 .displayName("Caroline")
                 .age(41)
                 .jobTitle("Corporate Lawyer")
                 .height(153)
-                .city(new City("Leeds", 53.801277, -1.548567))
+                .city(new City("Leeds", locationPoint))
                 .numberOfContactsExchanged(2)
                 .religion("Atheist")
                 .favourite(true)

@@ -19,9 +19,7 @@ public class QCity extends EntityPathBase<City> {
 
     public static final QCity city = new QCity("city");
 
-    public final NumberPath<Double> latitude = createNumber("latitude", Double.class);
-
-    public final NumberPath<Double> longitude = createNumber("longitude", Double.class);
+    public final ComparablePath<com.vividsolutions.jts.geom.Point> location = createComparable("location", com.vividsolutions.jts.geom.Point.class);
 
     public final StringPath name = createString("name");
 

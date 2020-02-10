@@ -1,9 +1,13 @@
 package com.spark.anubhav.mappers;
 
-import com.spark.anubhav.models.*;
+import com.spark.anubhav.models.City;
 import com.spark.anubhav.models.DTOs.CityDTO;
 import com.spark.anubhav.models.DTOs.MatchDTO;
 import com.spark.anubhav.models.DTOs.UserMatchesDTO;
+import com.spark.anubhav.models.Match;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,8 +25,11 @@ public class MatchMapper {
     }
 
     public static Match mapDTOtoMatch(UUID userId, MatchDTO matchDTO) {
-
         CityDTO city = matchDTO.getCity();
+        Coordinate cityCoordinates = new Coordinate(city.getLatitude(), city.getLongitude());
+        Point locationPoint = new GeometryFactory()
+                .createPoint(cityCoordinates);
+
         return Match.builder()
                 .displayName(matchDTO.getDisplayName())
                 .religion(matchDTO.getReligion())
@@ -32,7 +39,7 @@ public class MatchMapper {
                 .height(matchDTO.getHeightInCm())
                 .favourite(matchDTO.getFavourite())
                 .compatibilityScore(matchDTO.getCompatibilityScore())
-                .city(new City(city.getName(), city.getLatitude(), city.getLongitude()))
+                .city(new City(city.getName(), locationPoint))
                 .age(matchDTO.getAge())
                 .userId(userId)
                 .build();
@@ -42,8 +49,8 @@ public class MatchMapper {
         City matchCity = match.getCity();
         CityDTO cityDTO = new CityDTO(
                 matchCity.getName(),
-                matchCity.getLongitude(),
-                matchCity.getLatitude());
+                matchCity.getLocation().getX(),
+                matchCity.getLocation().getY());
 
         return MatchDTO.builder()
                 .displayName(match.getDisplayName())
