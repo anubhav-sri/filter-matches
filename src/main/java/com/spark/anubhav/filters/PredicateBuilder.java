@@ -75,7 +75,7 @@ public class PredicateBuilder {
         return this;
     }
 
-    public PredicateBuilder livingWithIn(DistanceRange distanceRange, double usersLatitude, double usersLongitude, GeometryFactory geometryFactory) {
+    public PredicateBuilder livingWithIn(DistanceRange distanceRange, Double usersLatitude, Double usersLongitude, GeometryFactory geometryFactory) {
         if (distanceRange != null) {
             filterList.add(new DistanceFilter(distanceRange, usersLatitude, usersLongitude, geometryFactory));
         }

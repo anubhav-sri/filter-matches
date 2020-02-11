@@ -209,7 +209,7 @@ class PredicateBuilderTest {
         UUID userId = UUID.randomUUID();
         Predicate actualPredicate = PredicateBuilder.builder()
                 .forUser(userId)
-                .livingWithIn(null, 12, 12, null)
+                .livingWithIn(null, 12.32, 12.54, null)
                 .build();
 
         Predicate expectedPredicate = new UserIdFilter(userId).buildPredicate();

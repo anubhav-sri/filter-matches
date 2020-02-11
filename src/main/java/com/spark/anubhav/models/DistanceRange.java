@@ -1,15 +1,13 @@
 package com.spark.anubhav.models;
 
-import lombok.Getter;
+import lombok.*;
+
 
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
 public class DistanceRange {
-    private final Integer from;
-    private final Integer to;
-
-    public DistanceRange(Integer from, Integer to) {
-
-        this.from = from;
-        this.to = to;
-    }
+    private Integer from;
+    private Integer to;
 }

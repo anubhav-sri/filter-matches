@@ -4,6 +4,10 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.spark.anubhav.filters.*;
 import com.spark.anubhav.models.*;
 import com.spark.anubhav.repositories.MatchRepository;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
+import org.geolatte.geom.codec.Wkt;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,18 +23,20 @@ import static com.spark.anubhav.utils.TestUtils.buildBaseMatch;
 import static com.spark.anubhav.utils.TestUtils.buildMatch;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class MatchServiceTest {
     @Mock
     private MatchRepository repository;
+    @Mock
+    private GeometryFactory geometryFactory;
     private MatchService matchService;
+    private final Coordinates coordinates = new Coordinates(12.3, 2.34);
 
     @BeforeEach
     void setUp() {
-        matchService = new MatchService(repository);
+        matchService = new MatchService(repository, geometryFactory);
     }
 
     @Test
@@ -79,7 +85,7 @@ class MatchServiceTest {
                 .thenReturn(matchesForUser);
 
         Iterable<Match> matches = matchService.findAllMatchesForUserBasedOnFilter(userId,
-                new MatchQueryFilters(true, null, null, null, null, null));
+                new MatchQueryFilters(true, null, null, null, null, null, null), new Coordinates(null, null));
 
         verify(repository).findAll(predicatedPassed);
         assertThat(matches).containsExactly(aMatch);
@@ -101,8 +107,8 @@ class MatchServiceTest {
         when(repository.findAll(expectedPredicatePassed))
                 .thenReturn(matchesForUser);
 
-        MatchQueryFilters matchQueryFilters = new MatchQueryFilters(null, true, null, null, null, null);
-        Iterable<Match> matches = matchService.findAllMatchesForUserBasedOnFilter(userId, matchQueryFilters);
+        MatchQueryFilters matchQueryFilters = new MatchQueryFilters(null, true, null, null, null, null, null);
+        Iterable<Match> matches = matchService.findAllMatchesForUserBasedOnFilter(userId, matchQueryFilters, coordinates);
 
         verify(repository).findAll(expectedPredicatePassed);
         assertThat(matches).containsExactly(favoriteMatch);
@@ -125,8 +131,8 @@ class MatchServiceTest {
         when(repository.findAll(expectedPredicatePassed))
                 .thenReturn(matchesForUser);
 
-        MatchQueryFilters matchQueryFilters = new MatchQueryFilters(null, null, range, null, null, null);
-        Iterable<Match> matches = matchService.findAllMatchesForUserBasedOnFilter(userId, matchQueryFilters);
+        MatchQueryFilters matchQueryFilters = new MatchQueryFilters(null, null, range, null, null, null, null);
+        Iterable<Match> matches = matchService.findAllMatchesForUserBasedOnFilter(userId, matchQueryFilters, coordinates);
 
         verify(repository).findAll(expectedPredicatePassed);
         assertThat(matches).containsExactly(compatibleMatch);
@@ -150,8 +156,8 @@ class MatchServiceTest {
                 .thenReturn(matchesForUser);
 
         MatchQueryFilters matchQueryFilters = new MatchQueryFilters(null,
-                null, null, range, null, null);
-        Iterable<Match> matches = matchService.findAllMatchesForUserBasedOnFilter(userId, matchQueryFilters);
+                null, null, range, null, null, null);
+        Iterable<Match> matches = matchService.findAllMatchesForUserBasedOnFilter(userId, matchQueryFilters, coordinates);
 
         verify(repository).findAll(expectedPredicatePassed);
         assertThat(matches).containsExactly(agedMatch);
@@ -175,8 +181,8 @@ class MatchServiceTest {
                 .thenReturn(matchesForUser);
 
         MatchQueryFilters matchQueryFilters = new MatchQueryFilters(null,
-                null, null, null, range, null);
-        Iterable<Match> matches = matchService.findAllMatchesForUserBasedOnFilter(userId, matchQueryFilters);
+                null, null, null, range, null, null);
+        Iterable<Match> matches = matchService.findAllMatchesForUserBasedOnFilter(userId, matchQueryFilters, coordinates);
 
         verify(repository).findAll(expectedPredicatePassed);
         assertThat(matches).containsExactly(matchWithInRangeHeight);
@@ -199,8 +205,37 @@ class MatchServiceTest {
                 .thenReturn(matchesForUser);
 
         MatchQueryFilters matchQueryFilters = new MatchQueryFilters(null,
-                null, null, null, null, true);
-        Iterable<Match> matches = matchService.findAllMatchesForUserBasedOnFilter(userId, matchQueryFilters);
+                null, null, null, null, true, null);
+        Iterable<Match> matches = matchService.findAllMatchesForUserBasedOnFilter(userId, matchQueryFilters, coordinates);
+
+        verify(repository).findAll(expectedPredicatePassed);
+        assertThat(matches).containsExactly(matchWithInRangeHeight);
+
+    }
+
+    @Test
+    public void shouldBeAbleToGetOnlyMatchesWhichAreInGivenDistanceRange() {
+        UUID userId = UUID.randomUUID();
+        Match matchWithInRangeHeight = buildBaseMatch(userId)
+                .build();
+
+        List<Match> matchesForUser = Collections.singletonList(matchWithInRangeHeight);
+        DistanceRange distanceRange = new DistanceRange(12, 12);
+
+        Point point = new GeometryFactory().createPoint(new Coordinate(coordinates.getLatitude(), coordinates.getLongitude()));
+        when(geometryFactory.createPoint(new Coordinate(coordinates.getLatitude(), coordinates.getLongitude())))
+                .thenReturn(point);
+
+        BooleanExpression expectedPredicatePassed = new UserIdFilter(userId).buildPredicate()
+                .and(new DistanceFilter(distanceRange, coordinates.getLatitude(), coordinates.getLongitude(), geometryFactory).buildPredicate());
+
+        when(repository.findAll(expectedPredicatePassed))
+                .thenReturn(matchesForUser);
+
+        MatchQueryFilters matchQueryFilters = new MatchQueryFilters(null,
+                null, null, null, null, null, distanceRange);
+
+        Iterable<Match> matches = matchService.findAllMatchesForUserBasedOnFilter(userId, matchQueryFilters, coordinates);
 
         verify(repository).findAll(expectedPredicatePassed);
         assertThat(matches).containsExactly(matchWithInRangeHeight);

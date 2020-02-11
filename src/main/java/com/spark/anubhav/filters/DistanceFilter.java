@@ -11,11 +11,11 @@ import com.vividsolutions.jts.geom.Point;
 
 public class DistanceFilter implements Filter {
     private final DistanceRange range;
-    private final double latitude;
-    private final double longitude;
+    private final Double latitude;
+    private final Double longitude;
     private GeometryFactory geometryFactory;
 
-    public DistanceFilter(DistanceRange distanceRange, double latitude, double longitude, GeometryFactory geometryFactory) {
+    public DistanceFilter(DistanceRange distanceRange, Double latitude, Double longitude, GeometryFactory geometryFactory) {
         range = distanceRange;
         this.latitude = latitude;
         this.longitude = longitude;

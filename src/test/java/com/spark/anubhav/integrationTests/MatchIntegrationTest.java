@@ -1,16 +1,22 @@
 package com.spark.anubhav.integrationTests;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.spark.anubhav.models.City;
 import com.spark.anubhav.models.DTOs.MatchDTO;
 import com.spark.anubhav.models.DTOs.UserMatchesDTO;
 import com.spark.anubhav.models.Match;
 import com.spark.anubhav.repositories.MatchRepository;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
+import org.geolatte.geom.codec.Wkt;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
@@ -23,7 +29,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 class MatchIntegrationTest {
 
@@ -32,9 +38,13 @@ class MatchIntegrationTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private GeometryFactory geometryFactory;
 
     @Autowired
     private MatchRepository matchRepository;
+    @LocalServerPort
+    int port;
     private static final UUID USER_ID = UUID.randomUUID();
 
     @BeforeEach
@@ -151,6 +161,36 @@ class MatchIntegrationTest {
         MockHttpServletRequestBuilder requestBuilder = get(String.format("/users/%s/matches/filter", USER_ID));
         requestBuilder.param("ageRange.from", "40");
         requestBuilder.param("ageRange.to", "46");
+
+        this.mockMvc
+                .perform(requestBuilder)
+                .andExpect(status().isOk())
+                .andExpect(content().string(objectMapper.writeValueAsString(expectedUserMatches)));
+
+    }
+
+    @Test
+    void shouldFilterOutTheMatchesNotInTheDistanceRange() throws Exception {
+        Match compatibleMatches = buildBaseMatch(USER_ID)
+                .id(UUID.randomUUID())
+                .city(new City("MyCity", geometryFactory.createPoint(new Coordinate(12, 34))))
+                .build();
+        Match nonCompatibleMatches = buildBaseMatch(USER_ID)
+                .id(UUID.randomUUID())
+                .city(new City("MyCity1", geometryFactory.createPoint(new Coordinate(102, 304))))
+                .build();
+
+        matchRepository.save(compatibleMatches);
+        matchRepository.save(nonCompatibleMatches);
+
+        MatchDTO expectedMatch = buildMatchDTO(compatibleMatches);
+        UserMatchesDTO expectedUserMatches = new UserMatchesDTO(USER_ID, List.of(expectedMatch));
+
+        MockHttpServletRequestBuilder requestBuilder = get(String.format("/users/%s/matches/filter", USER_ID));
+        requestBuilder.param("distanceRange.from", "0");
+        requestBuilder.param("distanceRange.to", "4");
+        requestBuilder.header("latitude", "12");
+        requestBuilder.header("longitude", "34");
 
         this.mockMvc
                 .perform(requestBuilder)
