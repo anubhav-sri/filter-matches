@@ -6,15 +6,13 @@ import com.spark.anubhav.models.DTOs.UserMatchesDTO;
 import com.spark.anubhav.models.MatchQueryFilters;
 import com.spark.anubhav.services.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
+@CrossOrigin
 public class MatchController {
     private MatchService matchService;
 
