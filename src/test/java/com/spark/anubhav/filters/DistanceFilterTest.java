@@ -4,6 +4,7 @@ import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.ComparablePath;
 import com.querydsl.spatial.jts.JTSGeometryPath;
+import com.spark.anubhav.models.Coordinates;
 import com.spark.anubhav.models.DistanceRange;
 import com.spark.anubhav.models.QMatch;
 import com.vividsolutions.jts.geom.Coordinate;
@@ -32,7 +33,7 @@ class DistanceFilterTest {
         double usersLatitude = 12;
         double usersLongitude = 12;
         distanceRange = new DistanceRange(18, 95);
-        distanceFilter = new DistanceFilter(distanceRange, usersLatitude, usersLongitude, geometryFactory);
+        distanceFilter = new DistanceFilter(distanceRange, new Coordinates(usersLatitude, usersLongitude), geometryFactory);
     }
 
     @Test

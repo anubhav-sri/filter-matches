@@ -72,7 +72,7 @@ public class MatchService {
                 .withHeightBetween(queryFilters.getHeightRange())
                 .isAlreadyAContact(queryFilters.getInContact())
                 .livingWithIn(queryFilters.getDistanceRange(),
-                        userCoordinates.getLatitude(), userCoordinates.getLongitude(), geometryFactory)
+                        userCoordinates, geometryFactory)
                 .build();
     }
 

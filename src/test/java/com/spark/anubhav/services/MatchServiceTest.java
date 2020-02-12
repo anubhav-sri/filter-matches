@@ -7,7 +7,6 @@ import com.spark.anubhav.repositories.MatchRepository;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
-import org.geolatte.geom.codec.Wkt;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -222,12 +221,13 @@ class MatchServiceTest {
         List<Match> matchesForUser = Collections.singletonList(matchWithInRangeHeight);
         DistanceRange distanceRange = new DistanceRange(12, 12);
 
-        Point point = new GeometryFactory().createPoint(new Coordinate(coordinates.getLatitude(), coordinates.getLongitude()));
-        when(geometryFactory.createPoint(new Coordinate(coordinates.getLatitude(), coordinates.getLongitude())))
+        Coordinate coordinate = new Coordinate(coordinates.getLatitude(), coordinates.getLongitude());
+        Point point = new GeometryFactory().createPoint(coordinate);
+        when(geometryFactory.createPoint(coordinate))
                 .thenReturn(point);
 
         BooleanExpression expectedPredicatePassed = new UserIdFilter(userId).buildPredicate()
-                .and(new DistanceFilter(distanceRange, coordinates.getLatitude(), coordinates.getLongitude(), geometryFactory).buildPredicate());
+                .and(new DistanceFilter(distanceRange, coordinates, geometryFactory).buildPredicate());
 
         when(repository.findAll(expectedPredicatePassed))
                 .thenReturn(matchesForUser);

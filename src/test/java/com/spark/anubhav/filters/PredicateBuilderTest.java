@@ -2,10 +2,7 @@ package com.spark.anubhav.filters;
 
 import com.querydsl.core.types.Predicate;
 import com.spark.anubhav.exceptions.UserIdCannotBeNullException;
-import com.spark.anubhav.models.AgeRange;
-import com.spark.anubhav.models.CompatibilityRange;
-import com.spark.anubhav.models.DistanceRange;
-import com.spark.anubhav.models.HeightRange;
+import com.spark.anubhav.models.*;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import org.junit.jupiter.api.Test;
 
@@ -195,11 +192,11 @@ class PredicateBuilderTest {
         GeometryFactory geometryFactory = new GeometryFactory();
         Predicate actualPredicate = PredicateBuilder.builder()
                 .forUser(userId)
-                .livingWithIn(distanceRange, latitude, longitude, geometryFactory)
+                .livingWithIn(distanceRange, new Coordinates(latitude, longitude), geometryFactory)
                 .build();
 
         Predicate expectedPredicate = new UserIdFilter(userId).buildPredicate()
-                .and(new DistanceFilter(distanceRange, latitude, longitude, geometryFactory).buildPredicate());
+                .and(new DistanceFilter(distanceRange, new Coordinates(latitude, longitude), geometryFactory).buildPredicate());
 
         assertThat(actualPredicate).isEqualTo(expectedPredicate);
     }
@@ -209,7 +206,7 @@ class PredicateBuilderTest {
         UUID userId = UUID.randomUUID();
         Predicate actualPredicate = PredicateBuilder.builder()
                 .forUser(userId)
-                .livingWithIn(null, 12.32, 12.54, null)
+                .livingWithIn(null, new Coordinates(12.32, 12.54), null)
                 .build();
 
         Predicate expectedPredicate = new UserIdFilter(userId).buildPredicate();
