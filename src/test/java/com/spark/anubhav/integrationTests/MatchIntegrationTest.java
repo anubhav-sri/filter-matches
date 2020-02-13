@@ -8,8 +8,6 @@ import com.spark.anubhav.models.Match;
 import com.spark.anubhav.repositories.MatchRepository;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
-import org.geolatte.geom.codec.Wkt;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,6 +18,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import javax.servlet.http.Cookie;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
@@ -161,6 +160,7 @@ class MatchIntegrationTest {
         MockHttpServletRequestBuilder requestBuilder = get(String.format("/users/%s/matches/filter", USER_ID));
         requestBuilder.param("ageRange.from", "40");
         requestBuilder.param("ageRange.to", "46");
+        requestBuilder.cookie(new Cookie("latitude", "45.54"), new Cookie("longitude", "5.67"));
 
         this.mockMvc
                 .perform(requestBuilder)
@@ -187,8 +187,7 @@ class MatchIntegrationTest {
         UserMatchesDTO expectedUserMatches = new UserMatchesDTO(USER_ID, List.of(expectedMatch));
 
         MockHttpServletRequestBuilder requestBuilder = get(String.format("/users/%s/matches/filter", USER_ID));
-        requestBuilder.param("distanceRange.from", "0");
-        requestBuilder.param("distanceRange.to", "4");
+        requestBuilder.param("withInDistanceInKms", "4");
         requestBuilder.header("latitude", "12");
         requestBuilder.header("longitude", "34");
 

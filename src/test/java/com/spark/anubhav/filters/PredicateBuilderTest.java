@@ -2,7 +2,10 @@ package com.spark.anubhav.filters;
 
 import com.querydsl.core.types.Predicate;
 import com.spark.anubhav.exceptions.UserIdCannotBeNullException;
-import com.spark.anubhav.models.*;
+import com.spark.anubhav.models.AgeRange;
+import com.spark.anubhav.models.CompatibilityRange;
+import com.spark.anubhav.models.Coordinates;
+import com.spark.anubhav.models.HeightRange;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import org.junit.jupiter.api.Test;
 
@@ -186,23 +189,23 @@ class PredicateBuilderTest {
     @Test
     public void shouldBuildPredicateCombiningUserIdAndDistance() {
         UUID userId = UUID.randomUUID();
-        DistanceRange distanceRange = new DistanceRange(12, 12);
         double latitude = 34.45;
         double longitude = 31.6;
         GeometryFactory geometryFactory = new GeometryFactory();
+        Integer withInDistanceInKms = 30;
         Predicate actualPredicate = PredicateBuilder.builder()
                 .forUser(userId)
-                .livingWithIn(distanceRange, new Coordinates(latitude, longitude), geometryFactory)
+                .livingWithIn(withInDistanceInKms, new Coordinates(latitude, longitude), geometryFactory)
                 .build();
 
         Predicate expectedPredicate = new UserIdFilter(userId).buildPredicate()
-                .and(new DistanceFilter(distanceRange, new Coordinates(latitude, longitude), geometryFactory).buildPredicate());
+                .and(new DistanceFilter(withInDistanceInKms, new Coordinates(latitude, longitude), geometryFactory).buildPredicate());
 
         assertThat(actualPredicate).isEqualTo(expectedPredicate);
     }
 
     @Test
-    public void shouldNotAddDistancePredicateIfDistanceRangeIsNull() {
+    public void shouldNotAddDistancePredicateIfDistanceIsNull() {
         UUID userId = UUID.randomUUID();
         Predicate actualPredicate = PredicateBuilder.builder()
                 .forUser(userId)

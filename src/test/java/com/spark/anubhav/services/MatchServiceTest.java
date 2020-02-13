@@ -22,7 +22,8 @@ import static com.spark.anubhav.utils.TestUtils.buildBaseMatch;
 import static com.spark.anubhav.utils.TestUtils.buildMatch;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class MatchServiceTest {
@@ -219,7 +220,7 @@ class MatchServiceTest {
                 .build();
 
         List<Match> matchesForUser = Collections.singletonList(matchWithInRangeHeight);
-        DistanceRange distanceRange = new DistanceRange(12, 12);
+        int withInDistanceInKms = 30;
 
         Coordinate coordinate = new Coordinate(coordinates.getLatitude(), coordinates.getLongitude());
         Point point = new GeometryFactory().createPoint(coordinate);
@@ -227,13 +228,13 @@ class MatchServiceTest {
                 .thenReturn(point);
 
         BooleanExpression expectedPredicatePassed = new UserIdFilter(userId).buildPredicate()
-                .and(new DistanceFilter(distanceRange, coordinates, geometryFactory).buildPredicate());
+                .and(new DistanceFilter(withInDistanceInKms, coordinates, geometryFactory).buildPredicate());
 
         when(repository.findAll(expectedPredicatePassed))
                 .thenReturn(matchesForUser);
 
         MatchQueryFilters matchQueryFilters = new MatchQueryFilters(null,
-                null, null, null, null, null, distanceRange);
+                null, null, null, null, null, withInDistanceInKms);
 
         Iterable<Match> matches = matchService.findAllMatchesForUserBasedOnFilter(userId, matchQueryFilters, coordinates);
 

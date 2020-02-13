@@ -2,7 +2,10 @@ package com.spark.anubhav.filters;
 
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.spark.anubhav.models.*;
+import com.spark.anubhav.models.AgeRange;
+import com.spark.anubhav.models.CompatibilityRange;
+import com.spark.anubhav.models.Coordinates;
+import com.spark.anubhav.models.HeightRange;
 import com.vividsolutions.jts.geom.GeometryFactory;
 
 import java.util.ArrayList;
@@ -72,9 +75,9 @@ public class PredicateBuilder {
         return this;
     }
 
-    public PredicateBuilder livingWithIn(DistanceRange distanceRange, Coordinates coordinate, GeometryFactory geometryFactory) {
-        if (distanceRange != null) {
-            filterList.add(new DistanceFilter(distanceRange, coordinate, geometryFactory));
+    public PredicateBuilder livingWithIn(Integer withInDistanceInKms, Coordinates coordinate, GeometryFactory geometryFactory) {
+        if (withInDistanceInKms != null) {
+            filterList.add(new DistanceFilter(withInDistanceInKms, coordinate, geometryFactory));
         }
         return this;
     }

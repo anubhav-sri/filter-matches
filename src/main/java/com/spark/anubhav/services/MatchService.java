@@ -71,7 +71,7 @@ public class MatchService {
                 .withAgeBetween(queryFilters.getAgeRange())
                 .withHeightBetween(queryFilters.getHeightRange())
                 .isAlreadyAContact(queryFilters.getInContact())
-                .livingWithIn(queryFilters.getDistanceRange(),
+                .livingWithIn(queryFilters.getWithInDistanceInKms(),
                         userCoordinates, geometryFactory)
                 .build();
     }

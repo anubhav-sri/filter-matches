@@ -1,8 +1,11 @@
 package com.spark.anubhav.controllers;
 
-import com.spark.anubhav.models.*;
+import com.spark.anubhav.models.AgeRange;
+import com.spark.anubhav.models.Coordinates;
 import com.spark.anubhav.models.DTOs.MatchDTO;
 import com.spark.anubhav.models.DTOs.UserMatchesDTO;
+import com.spark.anubhav.models.Match;
+import com.spark.anubhav.models.MatchQueryFilters;
 import com.spark.anubhav.services.MatchService;
 import com.spark.anubhav.utils.TestUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -73,7 +76,7 @@ class MatchControllerTest {
         List<MatchDTO> expectedMatches = List.of(buildMatchDTO(aMatch));
 
         MatchQueryFilters matchQueryFilters = new MatchQueryFilters(true, null,
-                null, null, null, null, new DistanceRange(null, null));
+                null, null, null, null, null);
         Coordinates userCoordinates = new Coordinates(12.43, 121.1);
         when(matchService.findAllMatchesForUserBasedOnFilter(USER_ID, matchQueryFilters, userCoordinates)).thenReturn(List.of(aMatch));
 

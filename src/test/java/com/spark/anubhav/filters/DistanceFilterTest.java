@@ -5,7 +5,6 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.ComparablePath;
 import com.querydsl.spatial.jts.JTSGeometryPath;
 import com.spark.anubhav.models.Coordinates;
-import com.spark.anubhav.models.DistanceRange;
 import com.spark.anubhav.models.QMatch;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
@@ -26,14 +25,14 @@ class DistanceFilterTest {
     @Mock
     private GeometryFactory geometryFactory;
     private DistanceFilter distanceFilter;
-    private DistanceRange distanceRange;
+    private Integer withInDistanceInKms;
 
     @BeforeEach
     void setUp() {
         double usersLatitude = 12;
         double usersLongitude = 12;
-        distanceRange = new DistanceRange(18, 95);
-        distanceFilter = new DistanceFilter(distanceRange, new Coordinates(usersLatitude, usersLongitude), geometryFactory);
+        withInDistanceInKms = 30;
+        distanceFilter = new DistanceFilter(withInDistanceInKms, new Coordinates(usersLatitude, usersLongitude), geometryFactory);
     }
 
     @Test
@@ -47,11 +46,7 @@ class DistanceFilterTest {
 
         when(geometryFactory.createPoint(new Coordinate(usersLatitude, usersLongitude))).thenReturn(point);
 
-        BooleanExpression predicateToConsiderMatchesDistantLessThanUpperLimit = geometryPath.distance(point).loe(distanceRange.getTo());
-        BooleanExpression predicateToConsiderMatchesDistantGreaterThanUpperLimit = geometryPath.distance(point).goe(distanceRange.getFrom());
-
-        BooleanExpression expectedPredicate = predicateToConsiderMatchesDistantLessThanUpperLimit
-                .and(predicateToConsiderMatchesDistantGreaterThanUpperLimit);
+        BooleanExpression expectedPredicate = geometryPath.distance(point).loe(withInDistanceInKms);
 
         Predicate actualPredicate = distanceFilter
                 .buildPredicate();
