@@ -160,7 +160,6 @@ class MatchIntegrationTest {
         MockHttpServletRequestBuilder requestBuilder = get(String.format("/users/%s/matches/filter", USER_ID));
         requestBuilder.param("ageRange.from", "40");
         requestBuilder.param("ageRange.to", "46");
-        requestBuilder.cookie(new Cookie("latitude", "45.54"), new Cookie("longitude", "5.67"));
 
         this.mockMvc
                 .perform(requestBuilder)
