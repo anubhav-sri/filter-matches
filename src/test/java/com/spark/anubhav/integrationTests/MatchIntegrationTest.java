@@ -186,7 +186,7 @@ class MatchIntegrationTest {
         UserMatchesDTO expectedUserMatches = new UserMatchesDTO(USER_ID, List.of(expectedMatch));
 
         MockHttpServletRequestBuilder requestBuilder = get(String.format("/users/%s/matches/filter", USER_ID));
-        requestBuilder.param("withInDistanceInKms", "4");
+        requestBuilder.param("withInDistanceInKms", "30");
         requestBuilder.header("latitude", "12");
         requestBuilder.header("longitude", "34");
 
