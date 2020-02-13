@@ -15,9 +15,9 @@ import java.io.Serializable;
 public class CityDTO implements Serializable {
     @JsonProperty("name")
     private String name;
-    @JsonProperty("lon")
-    private Double longitude;
     @JsonProperty("lat")
     private Double latitude;
+    @JsonProperty("lon")
+    private Double longitude;
 
 }
