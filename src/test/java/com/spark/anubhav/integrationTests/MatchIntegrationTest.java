@@ -197,32 +197,6 @@ class MatchIntegrationTest {
 
     }
 
-    @Test
-    void shouldThrowInValidFilterExceptionIfCompatibilityScoreOutOfBound() throws Exception {
-
-        MockHttpServletRequestBuilder requestBuilder = get(String.format("/users/%s/matches/filter", USER_ID));
-        requestBuilder.param("compatibilityRange.from", "0.005");
-        requestBuilder.param("compatibilityRange.to", "89");
-
-        this.mockMvc
-                .perform(requestBuilder)
-                .andExpect(status().isBadRequest());
-
-    }
-
-    @Test
-    void shouldRespondWithBadRequestIfAgeRangeIsOutOfBound() throws Exception {
-
-        MockHttpServletRequestBuilder requestBuilder = get(String.format("/users/%s/matches/filter", USER_ID));
-        requestBuilder.param("ageRange.from", "17");
-        requestBuilder.param("ageRange.to", "99");
-
-        this.mockMvc
-                .perform(requestBuilder)
-                .andExpect(status().isBadRequest());
-
-    }
-
     private Match createNonFavoriteMatch() {
         return buildBaseMatch(USER_ID)
                 .id(UUID.randomUUID())

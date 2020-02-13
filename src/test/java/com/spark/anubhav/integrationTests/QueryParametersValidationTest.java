@@ -80,6 +80,17 @@ class QueryParametersValidationTest {
                 .andExpect(status().isBadRequest());
     }
 
+    @Test
+    void shouldRespondWithBadRequestIfQueryParamHeightIsOutOfBounds() throws Exception {
+        MockHttpServletRequestBuilder requestBuilder = get(String.format("/users/%s/matches/filter", USER_ID));
+        requestBuilder.param("heightRange.from", "134");
+        requestBuilder.param("heightRange.to", "211");
+
+        this.mockMvc
+                .perform(requestBuilder)
+                .andExpect(status().isBadRequest());
+    }
+
     @AfterEach
     void tearDown() {
         matchRepository.deleteAll();

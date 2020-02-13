@@ -20,6 +20,7 @@ public class MatchQueryFilters {
     private CompatibilityRange compatibilityRange;
     @Valid
     private AgeRange ageRange;
+    @Valid
     private HeightRange heightRange;
     private Boolean inContact;
     @Min(30)
