@@ -6,6 +6,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
 @Getter
 @EqualsAndHashCode
@@ -20,6 +22,8 @@ public class MatchQueryFilters {
     private AgeRange ageRange;
     private HeightRange heightRange;
     private Boolean inContact;
+    @Min(30)
+    @Max(300)
     private Integer withInDistanceInKms;
 
     public MatchQueryFilters(Boolean hasPhoto, Boolean isFavorite, CompatibilityRange compatibilityRange,
