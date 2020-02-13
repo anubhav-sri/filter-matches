@@ -22,12 +22,7 @@ public class MatchController {
     }
 
     @GetMapping(value = "/users/{userId}/matches")
-    public UserMatchesDTO getAllMatchesForUser(@PathVariable("userId") UUID userId) {
-        return MatchMapper.convertToDTO(userId, matchService.findAllMatchesForUser(userId));
-    }
-
-    @GetMapping(value = "/users/{userId}/matches/filter")
-    public UserMatchesDTO filterOutTheMatchesFotUser(@PathVariable UUID userId,
+    public UserMatchesDTO findAllMatchesUsingFilters(@PathVariable UUID userId,
                                                      @Valid MatchQueryFilters queryFilters,
                                                      @RequestHeader(value = "latitude", required = false) Double latitude,
                                                      @RequestHeader(value = "longitude", required = false) Double longitude) {

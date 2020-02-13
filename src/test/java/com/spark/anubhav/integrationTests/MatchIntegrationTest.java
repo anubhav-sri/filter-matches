@@ -18,7 +18,6 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
-import javax.servlet.http.Cookie;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
@@ -32,6 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class MatchIntegrationTest {
 
+    private static final String GET_USER_MATCHES_STRING_TEMPLATE = "/users/%s/matches";
     @Autowired
     private MockMvc mockMvc;
 
@@ -81,7 +81,7 @@ class MatchIntegrationTest {
         MatchDTO expectedMatch = buildMatchDTO(aMatch);
         UserMatchesDTO expectedUserMatches = new UserMatchesDTO(USER_ID, List.of(expectedMatch));
 
-        MockHttpServletRequestBuilder requestBuilder = get(String.format("/users/%s/matches/filter", USER_ID));
+        MockHttpServletRequestBuilder requestBuilder = get(String.format(GET_USER_MATCHES_STRING_TEMPLATE, USER_ID));
         requestBuilder.param("hasPhoto", String.valueOf(true));
 
         this.mockMvc
@@ -102,7 +102,7 @@ class MatchIntegrationTest {
         MatchDTO expectedMatch = buildMatchDTO(favoriteMatch);
         UserMatchesDTO expectedUserMatches = new UserMatchesDTO(USER_ID, List.of(expectedMatch));
 
-        MockHttpServletRequestBuilder requestBuilder = get(String.format("/users/%s/matches/filter", USER_ID));
+        MockHttpServletRequestBuilder requestBuilder = get(String.format(GET_USER_MATCHES_STRING_TEMPLATE, USER_ID));
         requestBuilder.param("isFavorite", String.valueOf(true));
 
         this.mockMvc
@@ -129,7 +129,7 @@ class MatchIntegrationTest {
         MatchDTO expectedMatch = buildMatchDTO(compatibleMatches);
         UserMatchesDTO expectedUserMatches = new UserMatchesDTO(USER_ID, List.of(expectedMatch));
 
-        MockHttpServletRequestBuilder requestBuilder = get(String.format("/users/%s/matches/filter", USER_ID));
+        MockHttpServletRequestBuilder requestBuilder = get(String.format(GET_USER_MATCHES_STRING_TEMPLATE, USER_ID));
         requestBuilder.param("compatibilityRange.from", "0.69");
         requestBuilder.param("compatibilityRange.to", "0.99");
 
@@ -157,7 +157,7 @@ class MatchIntegrationTest {
         MatchDTO expectedMatch = buildMatchDTO(compatibleMatches);
         UserMatchesDTO expectedUserMatches = new UserMatchesDTO(USER_ID, List.of(expectedMatch));
 
-        MockHttpServletRequestBuilder requestBuilder = get(String.format("/users/%s/matches/filter", USER_ID));
+        MockHttpServletRequestBuilder requestBuilder = get(String.format(GET_USER_MATCHES_STRING_TEMPLATE, USER_ID));
         requestBuilder.param("ageRange.from", "40");
         requestBuilder.param("ageRange.to", "46");
 
@@ -185,7 +185,7 @@ class MatchIntegrationTest {
         MatchDTO expectedMatch = buildMatchDTO(compatibleMatches);
         UserMatchesDTO expectedUserMatches = new UserMatchesDTO(USER_ID, List.of(expectedMatch));
 
-        MockHttpServletRequestBuilder requestBuilder = get(String.format("/users/%s/matches/filter", USER_ID));
+        MockHttpServletRequestBuilder requestBuilder = get(String.format(GET_USER_MATCHES_STRING_TEMPLATE, USER_ID));
         requestBuilder.param("withInDistanceInKms", "30");
         requestBuilder.header("latitude", "12");
         requestBuilder.header("longitude", "34");

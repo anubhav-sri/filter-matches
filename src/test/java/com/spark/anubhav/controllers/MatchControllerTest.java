@@ -30,26 +30,27 @@ class MatchControllerTest {
     private MatchService matchService;
     private MatchController matchController;
     private static final UUID USER_ID = UUID.randomUUID();
+    private MatchQueryFilters emptyQueryFilter;
 
     @BeforeEach
     void setUp() {
         matchController = new MatchController(matchService);
+        emptyQueryFilter = new MatchQueryFilters(null, null, null, null, null, null, null);
     }
 
     @Test
     public void shouldReturnAllMatchesForTheUser() {
-        UUID userId = UUID.randomUUID();
-        List<Match> matchesForUser = List.of(buildMatch(userId));
+        List<Match> matchesForUser = List.of(buildMatch(USER_ID));
         List<MatchDTO> expectedMatchesDTO = matchesForUser.stream().map(TestUtils::buildMatchDTO)
                 .collect(Collectors.toList());
 
-        when(matchService.findAllMatchesForUser(userId))
+        when(matchService.findAllMatchesForUserBasedOnFilter(USER_ID, emptyQueryFilter, new Coordinates(null, null)))
                 .thenReturn(matchesForUser);
 
         UserMatchesDTO actualUserMatches = matchController
-                .getAllMatchesForUser(userId);
+                .findAllMatchesUsingFilters(USER_ID, emptyQueryFilter, null, null);
 
-        assertAll("Verify userMatches", () -> assertThat(actualUserMatches.getUserId()).isEqualTo(userId),
+        assertAll("Verify userMatches", () -> assertThat(actualUserMatches.getUserId()).isEqualTo(USER_ID),
                 () -> assertThat(actualUserMatches.getMatches())
                         .usingFieldByFieldElementComparator().containsAll(expectedMatchesDTO));
 
@@ -58,11 +59,11 @@ class MatchControllerTest {
     @Test
     public void shouldReturnEmptyListWhenNoMatchesForTheUser() {
 
-        when(matchService.findAllMatchesForUser(USER_ID))
+        when(matchService.findAllMatchesForUserBasedOnFilter(USER_ID, emptyQueryFilter, new Coordinates(null, null)))
                 .thenReturn(List.of());
 
         UserMatchesDTO actualUserMatches = matchController
-                .getAllMatchesForUser(USER_ID);
+                .findAllMatchesUsingFilters(USER_ID, emptyQueryFilter, null, null);
 
         assertAll("Verify userMatches for no matches", () -> assertThat(actualUserMatches.getUserId()).isEqualTo(USER_ID),
                 () -> assertThat(actualUserMatches.getMatches())
@@ -80,7 +81,7 @@ class MatchControllerTest {
         Coordinates userCoordinates = new Coordinates(12.43, 121.1);
         when(matchService.findAllMatchesForUserBasedOnFilter(USER_ID, matchQueryFilters, userCoordinates)).thenReturn(List.of(aMatch));
 
-        UserMatchesDTO actualUserMatches = matchController.filterOutTheMatchesFotUser(USER_ID, matchQueryFilters, userCoordinates.getLatitude(), userCoordinates.getLongitude());
+        UserMatchesDTO actualUserMatches = matchController.findAllMatchesUsingFilters(USER_ID, matchQueryFilters, userCoordinates.getLatitude(), userCoordinates.getLongitude());
 
         assertThat(actualUserMatches.getMatches())
                 .usingFieldByFieldElementComparator()
@@ -101,7 +102,7 @@ class MatchControllerTest {
         Coordinates userCoordinates = new Coordinates(12.34, 13.1);
         when(matchService.findAllMatchesForUserBasedOnFilter(USER_ID, matchQueryFilters, userCoordinates)).thenReturn(List.of(aMatch));
 
-        UserMatchesDTO actualUserMatches = matchController.filterOutTheMatchesFotUser(USER_ID, matchQueryFilters,
+        UserMatchesDTO actualUserMatches = matchController.findAllMatchesUsingFilters(USER_ID, matchQueryFilters,
                 userCoordinates.getLatitude(), userCoordinates.getLongitude());
 
         assertThat(actualUserMatches.getMatches())

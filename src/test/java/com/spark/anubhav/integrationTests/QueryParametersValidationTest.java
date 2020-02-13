@@ -20,6 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class QueryParametersValidationTest {
 
+    private static final String GET_USER_MATCHES_STRING_TEMPLATE = "/users/%s/matches";
     @Autowired
     private MockMvc mockMvc;
 
@@ -37,7 +38,7 @@ class QueryParametersValidationTest {
     @Test
     void shouldThrowInValidFilterExceptionIfCompatibilityScoreOutOfBound() throws Exception {
 
-        MockHttpServletRequestBuilder requestBuilder = get(String.format("/users/%s/matches/filter", USER_ID));
+        MockHttpServletRequestBuilder requestBuilder = get(String.format(GET_USER_MATCHES_STRING_TEMPLATE, USER_ID));
         requestBuilder.param("compatibilityRange.from", "0.005");
         requestBuilder.param("compatibilityRange.to", "89");
 
@@ -50,7 +51,7 @@ class QueryParametersValidationTest {
     @Test
     void shouldRespondWithBadRequestIfAgeRangeIsOutOfBound() throws Exception {
 
-        MockHttpServletRequestBuilder requestBuilder = get(String.format("/users/%s/matches/filter", USER_ID));
+        MockHttpServletRequestBuilder requestBuilder = get(String.format(GET_USER_MATCHES_STRING_TEMPLATE, USER_ID));
         requestBuilder.param("ageRange.from", "17");
         requestBuilder.param("ageRange.to", "99");
 
@@ -62,7 +63,7 @@ class QueryParametersValidationTest {
 
     @Test
     void shouldRespondWithBadRequestIfDistanceIsLessThan30Km() throws Exception {
-        MockHttpServletRequestBuilder requestBuilder = get(String.format("/users/%s/matches/filter", USER_ID));
+        MockHttpServletRequestBuilder requestBuilder = get(String.format(GET_USER_MATCHES_STRING_TEMPLATE, USER_ID));
         requestBuilder.param("withInDistanceInKms", "28");
 
         this.mockMvc
@@ -72,7 +73,7 @@ class QueryParametersValidationTest {
 
     @Test
     void shouldRespondWithBadRequestIfDistanceIsMoreThan300Km() throws Exception {
-        MockHttpServletRequestBuilder requestBuilder = get(String.format("/users/%s/matches/filter", USER_ID));
+        MockHttpServletRequestBuilder requestBuilder = get(String.format(GET_USER_MATCHES_STRING_TEMPLATE, USER_ID));
         requestBuilder.param("withInDistanceInKms", "301");
 
         this.mockMvc
@@ -82,7 +83,7 @@ class QueryParametersValidationTest {
 
     @Test
     void shouldRespondWithBadRequestIfQueryParamHeightIsOutOfBounds() throws Exception {
-        MockHttpServletRequestBuilder requestBuilder = get(String.format("/users/%s/matches/filter", USER_ID));
+        MockHttpServletRequestBuilder requestBuilder = get(String.format(GET_USER_MATCHES_STRING_TEMPLATE, USER_ID));
         requestBuilder.param("heightRange.from", "134");
         requestBuilder.param("heightRange.to", "211");
 
